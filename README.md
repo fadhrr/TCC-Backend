@@ -11,13 +11,15 @@
 Klon projek ini dengan menjalankan perintah berikut
 
 ```bash
-  git clone git@github.com:fadhrr/backend.git
-  cd backend
-  composer install
+  git clone git@github.com:fadhrr/TCC-Backend.git
+  cd TCC-Backend
+  pip install -r requirements.txt
 ```
-setelah instalasi selesai, jalankan dengan mengeksekusi perintah 
+setelah instalasi selesai, 🚀jalankan server dengan dengan mengeksekusi perintah 
 ```
-  php artisan serve
+  uvicorn main:app --reload
 ```
 
+## Note📝
+- Memerlukan mysql
     
