@@ -20,8 +20,7 @@ class UpdateUserBase(BaseModel):
     password: Optional[str] 
     score: Optional[int] 
     email: Optional[str] 
-    class Config:
-        orm_mode = True
+    
 
 @router.get("/api/users")
 def read_all_users():
@@ -68,8 +67,7 @@ def update_user(user_id : Annotated[int, Path(title="Id user yang ingin di ganti
         
     if userUpdated.email != None :
         db_user.email = userUpdated.email
-        
-    conn.execute(users.update().values(updated_fields).where(users.c.id == user.id))
+  
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
