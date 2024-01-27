@@ -8,14 +8,20 @@
 
 ## Installation 🛠️
 
-Klon projek ini dengan menjalankan perintah berikut
+- Klon projek ini dengan menjalankan perintah berikut
 
 ```bash
   git clone git@github.com:fadhrr/TCC-Backend.git
   cd TCC-Backend
   pip install -r requirements.txt
 ```
-setelah instalasi selesai, 🚀jalankan server dengan dengan mengeksekusi perintah 
+
+- import basic mysql schema `tcc-database.sql`
+
+- Inisiasi Konfigurasi:
+Buat file baru `.env` di dalam direktori `app/`, salin isi dari file `.env.example`, dan atur nilai-nilai sesuai kebutuhan proyek Anda.
+
+- setelah konfigurasi selesai, 🚀jalankan server dengan dengan mengeksekusi perintah 
 ```
   uvicorn main:app --reload
 ```
