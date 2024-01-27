@@ -18,7 +18,7 @@
 
 - import basic mysql schema `tcc-database.sql`
 
-- Bila menggunakan *phpmyadmin*, buat database **tcc_database**, lalu import schemanya
+- Bila menggunakan *phpmyadmin*, buat database `tcc_database``, lalu import schemanya
 
 - Inisiasi Konfigurasi:
 Buat file baru `.env` di dalam direktori `app/`, salin isi dari file `.env.example`, dan atur nilai-nilai sesuai kebutuhan proyek Anda.
