@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admins` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `id` varchar(40) NOT NULL,
+  `user_id` varchar(40) NOT NULL,
   `role` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -78,7 +78,7 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `created_at`, `updated_at`) VALU
 
 CREATE TABLE `contests` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `admin_id` bigint(20) UNSIGNED NOT NULL,
+  `admin_id` varchar(40) NOT NULL,
   `title` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -238,7 +238,7 @@ INSERT INTO `problems` (`id`, `title`, `description`, `time_limit`, `memory_limi
 
 CREATE TABLE `submissions` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(40) NOT NULL,
   `problem_id` bigint(20) UNSIGNED NOT NULL,
   `language_id` bigint(20) UNSIGNED NOT NULL,
   `status` varchar(255) NOT NULL,
@@ -293,7 +293,7 @@ INSERT INTO `test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+  `id` varchar(40) NOT NULL,
   `name` varchar(255) NOT NULL,
   `nim` varchar(255) DEFAULT NULL,
   `score` int(11) NOT NULL DEFAULT 0,
