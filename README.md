@@ -36,7 +36,7 @@
 
 ## Documentation 📚
 
-Untuk melihat dokumentasi lokal, jalankan project terlebih dahulu. Lalu buka url `http://localhost:8000/api/problems`
+Untuk melihat dokumentasi lokal, jalankan project terlebih dahulu. Lalu buka url `http://localhost:8000/docs`
 
 ## Note📝
 - Memerlukan mysql
