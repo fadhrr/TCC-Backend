@@ -42,8 +42,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `user_id`, `role`, `created_at`, `updated_at`) VALUES
-(1, 1, 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(2, 2, 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('1', '1', 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('2', '2', 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -93,9 +93,9 @@ CREATE TABLE `contests` (
 --
 
 INSERT INTO `contests` (`id`, `admin_id`, `title`, `slug`, `description`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:28:43', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(2, 2, 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-02-05 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(3, 1, 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-02-15 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+(1, '1', 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:28:43', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-02-05 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-02-15 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -254,9 +254,9 @@ CREATE TABLE `submissions` (
 --
 
 INSERT INTO `submissions` (`id`, `user_id`, `problem_id`, `language_id`, `status`, `time`, `memory`, `code`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 'Accepted', 10, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(2, 2, 3, 2, 'Wrong Answer', 15, 512, '#include <stdio.h>\\nint main() { printf(\"Wrong Answer\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(3, 1, 6, 3, 'Compile Error', 5, 128, 'def print_message():\\n    print(\"Compile Error\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+(1, '1', 1, 1, 'Accepted', 10, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 3, 2, 'Wrong Answer', 15, 512, '#include <stdio.h>\\nint main() { printf(\"Wrong Answer\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 6, 3, 'Compile Error', 5, 128, 'def print_message():\\n    print(\"Compile Error\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -310,9 +310,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin User', 'A12345', 150, 'admin@example.com', NULL, '$2y$12$uDQaa/M2K8duAZG9yk35VeoIDBc0DJNxo.2rYUvtAFzBk3EkO8XP2', NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
-(2, 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, '$2y$12$PeSK.HFauyF26OI33UbhBOvq5aMuluUUyYiZEiwUjPPHQAuXFxVpy', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(3, 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, '$2y$12$mbFibazcZEc3kXWVhxOjTe/CH0EV10LCyV5RBREmw/FoR66MuQ9nK', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('1', 'Admin User', 'A12345', 150, 'admin@example.com', NULL, '$2y$12$uDQaa/M2K8duAZG9yk35VeoIDBc0DJNxo.2rYUvtAFzBk3EkO8XP2', NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, '$2y$12$PeSK.HFauyF26OI33UbhBOvq5aMuluUUyYiZEiwUjPPHQAuXFxVpy', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, '$2y$12$mbFibazcZEc3kXWVhxOjTe/CH0EV10LCyV5RBREmw/FoR66MuQ9nK', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
 -- Indexes for dumped tables
@@ -401,11 +401,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
---
--- AUTO_INCREMENT untuk tabel `admins`
---
-ALTER TABLE `admins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 
 --
 -- AUTO_INCREMENT untuk tabel `categories`
@@ -461,11 +457,7 @@ ALTER TABLE `submissions`
 ALTER TABLE `test_cases`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
---
--- AUTO_INCREMENT untuk tabel `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
