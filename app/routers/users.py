@@ -99,3 +99,4 @@ def delete_user(user_id: Annotated[int, Path(title="Id user yang ingin di delete
     
     return {"message" : "User deleted successfully"}
    
+   
