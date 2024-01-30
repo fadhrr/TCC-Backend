@@ -36,6 +36,7 @@ class Problem(Base):
     explanation = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
+    categories = relationship("Category", secondary="problem_categories")
 
     
 class Language(Base):
@@ -50,13 +51,14 @@ class Submission(Base):
     __tablename__ = "submissions"
     
     id = Column(Integer, primary_key=True, index= True, autoincrement=True)
-    user_id = Column(String, ForeignKey("users.id"))
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
     problem_id = Column(Integer, ForeignKey("problems.id"))
     language_id = Column(Integer, ForeignKey("languages.id"))
     status = Column(String)
     time = Column(Integer)
     memory = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
+    
 
 class TestCase(Base):
     __tablename__ = "test_cases"
@@ -87,6 +89,13 @@ class Category(Base):
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String)
+    problems = relationship('Problem', secondary="problem_categories")
     
-
+    
+class ProblemCategory(Base):
+    __tablename__ = "problem_categories"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"))
+    problem_id = Column(Integer, ForeignKey("problems.id"))
     
