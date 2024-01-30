@@ -57,6 +57,19 @@ class Submission(Base):
     time = Column(Integer)
     memory = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class TestCase(Base):
+    __tablename__ = "test_cases"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    problem_id = Column(Integer, ForeignKey("problems.id"))
+    input = Column(String)
+    output = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
+# class TestCaseResult(Base):
+#     __tablename__ = "test_cases_results"
     
     
 class Admin(Base):

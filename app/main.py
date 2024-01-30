@@ -7,7 +7,7 @@ from database import engine, SessionLocal
 import models
 from typing import Annotated
 from pydantic import BaseModel
-from routers import users, problems, admins, languages, submissions
+from routers import users, problems, admins, languages, submissions, categories
 
 
 
@@ -35,5 +35,6 @@ app.include_router(problems.router)
 app.include_router(admins.router)
 app.include_router(submissions.router)
 app.include_router(languages.router)
+app.include_router(categories.router)
 
 

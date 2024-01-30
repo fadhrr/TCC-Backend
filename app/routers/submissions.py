@@ -6,7 +6,7 @@ from database import SessionLocal
 
 router = APIRouter()
 
-class WriteSubmission(BaseModel):
+class WriteSubmissionBase(BaseModel):
     user_id : str
     problem_id : int
     language_id : int
@@ -20,14 +20,16 @@ def read_all_submissions ():
     db_submissions_data = db.query(Submission).all()
     return db_submissions_data
 
+
 @router.get('/api/submission/{submission_id}', tags=["submissions"])
 def read_submission(submission_id:str):
     db = SessionLocal()
     db_submission_data = db.query(Submission).filter(Submission.id == submission_id).first()
     return db_submission_data
 
+
 @router.post('/api/submission', tags=["submissions"])
-def write_submission(new_submission : WriteSubmission):
+def write_submission(new_submission : WriteSubmissionBase):
     db = SessionLocal()
     db_new_submission = Submission(
         user_id = new_submission.user_id,
@@ -42,6 +44,7 @@ def write_submission(new_submission : WriteSubmission):
     db.commit()
     db.refresh(db_new_submission)
     return {"message" : "submission created successfully"}
+    
     
 @router.delete('/api/submission/{submission_id}', tags=["submissions"])
 def delete_submission(submission_id : str):

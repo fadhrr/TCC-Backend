@@ -6,7 +6,7 @@ from database import SessionLocal
 
 router = APIRouter()
 
-class WriteAdmin(BaseModel):
+class WriteAdminBase(BaseModel):
     id : str
     role : int | None = None
 
@@ -23,7 +23,7 @@ def read_admin(admin_id:str):
     return db_admin_data
 
 @router.post('/api/admin', tags=["admins"])
-def write_admin(new_admin : WriteAdmin):
+def write_admin(new_admin : WriteAdminBase):
     db = SessionLocal()
     db_new_admin = Admin(id = new_admin.id)
     

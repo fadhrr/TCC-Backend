@@ -2,6 +2,7 @@ from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, Path, Query, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy import desc
 from pydantic import BaseModel
 from database import SessionLocal
 from models import User
@@ -10,7 +11,7 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-class UserBase(BaseModel):
+class WriteUserBase(BaseModel):
     id : str
     name: str
     nim: str
@@ -49,7 +50,7 @@ def read_user(user_id : Annotated[int, Path(title="Id user yang ingin diambil")]
     return user
 
 @router.post("/api/user", tags=["users"])
-def write_user(user: UserBase):
+def write_user(user: WriteUserBase):
     db = SessionLocal()
     user = User(id = user.id, name=user.name, nim=user.nim, password=user.password, score=0, email=user.email)
     db.add(user)
@@ -99,4 +100,8 @@ def delete_user(user_id: Annotated[int, Path(title="Id user yang ingin di delete
     
     return {"message" : "User deleted successfully"}
    
-   
+@router.get("/api/leaderboard", tags=["users"])
+def get_leaderboard():
+    db = SessionLocal()
+    user = db.query(User).order_by(desc(User.score)).all()
+    return user

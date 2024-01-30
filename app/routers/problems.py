@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-class ProblemBase(BaseModel):
+class WriteProblemBase(BaseModel):
     title : str
     description : str
     time_limit : int
@@ -51,7 +51,7 @@ def read_problem(problem_id : int):
     return db_problem
 
 @router.post('/api/problem', tags=["problems"])
-def create_problem(new_problem : ProblemBase):
+def create_problem(new_problem : WriteProblemBase):
     db = SessionLocal()
     problem = Problem(
         title = new_problem.title,
