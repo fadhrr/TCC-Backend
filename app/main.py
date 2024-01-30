@@ -1,12 +1,13 @@
 from typing import Union
 
 from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from database import engine, SessionLocal
 import models
 from typing import Annotated
 from pydantic import BaseModel
-from routers import users, problems
+from routers import users, problems, admins, languages, submissions
 
 
 
@@ -23,15 +24,16 @@ app = FastAPI(
     }
 )
 
-class UserBase(BaseModel):
-    name: str
-    nim: str
-    password: str
-    score: int
-    email: str
-    
+# automatically redirect to /docs while landing
+
+@app.get('/', tags=["Landing Path"])
+def redirect():
+    return RedirectResponse('/docs')
 
 app.include_router(users.router)
 app.include_router(problems.router)
+app.include_router(admins.router)
+app.include_router(submissions.router)
+app.include_router(languages.router)
 
 
