@@ -24,7 +24,7 @@ class Problem(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String(255))
-    owner_id = Column(String(255), ForeignKey("users.id"))
+    # user_id = Column(String(255), ForeignKey("users.id"))
     description = Column(String)
     time_limit = Column(Integer)
     memory_limit = Column(Integer)
@@ -96,6 +96,6 @@ class ProblemCategory(Base):
     __tablename__ = "problem_categories"
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(String, ForeignKey("users.id"))
+    category_id = Column(String, ForeignKey("categories.id"))
     problem_id = Column(Integer, ForeignKey("problems.id"))
     

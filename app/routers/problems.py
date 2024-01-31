@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from database import SessionLocal
-from models import Problem
+from models import Problem, ProblemCategory
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -49,6 +49,14 @@ def read_problem(problem_id : int):
     db = SessionLocal()
     db_problem = db.query(Problem).filter(Problem.id == problem_id).first()
     return db_problem
+
+# get router based on category
+@router.get('/api/problems/{category_id}', tags=["problems", "categories"])
+def read_problem_category(category_id : int):
+    db = SessionLocal()
+    db_problem = db.query(Problem).join(ProblemCategory).filter(ProblemCategory.category_id == category_id).all()
+    return db_problem
+
 
 @router.post('/api/problem', tags=["problems"])
 def create_problem(new_problem : WriteProblemBase):
