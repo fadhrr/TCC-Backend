@@ -7,7 +7,7 @@ from database import engine, SessionLocal
 import models
 from typing import Annotated
 from pydantic import BaseModel
-from routers import users, problems, admins, languages, submissions, categories
+from routers import users, problems, admins, languages, submissions, categories, test_cases
 
 
 
@@ -24,11 +24,13 @@ app = FastAPI(
     }
 )
 
-# automatically redirect to /docs while landing
+
+# otomatis pindah ke /docs ketika landing 
 
 @app.get('/', tags=["Landing Path"])
 def redirect():
     return RedirectResponse('/docs')
+
 
 app.include_router(users.router)
 app.include_router(problems.router)
@@ -36,5 +38,6 @@ app.include_router(admins.router)
 app.include_router(submissions.router)
 app.include_router(languages.router)
 app.include_router(categories.router)
+app.include_router(test_cases.router)
 
 
