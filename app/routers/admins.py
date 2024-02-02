@@ -8,6 +8,7 @@ router = APIRouter()
 
 class WriteAdminBase(BaseModel):
     id : str
+    user_id : str
     role : int | None = None
 
 @router.get('/api/admins', tags=["admins"])
@@ -25,7 +26,7 @@ def read_admin(admin_id:str):
 @router.post('/api/admin', tags=["admins"])
 def write_admin(new_admin : WriteAdminBase):
     db = SessionLocal()
-    db_new_admin = Admin(id = new_admin.id)
+    db_new_admin = Admin(id = new_admin.id, user_id = new_admin.user_id)
     
     if new_admin.role is None :
         db_new_admin.role = 1
