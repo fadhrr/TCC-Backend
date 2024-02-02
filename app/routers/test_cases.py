@@ -23,7 +23,7 @@ def read_test_case(test_case_id : int):
     db_test_case =   db.query(TestCase).filter(TestCase.id == test_case_id).first()
     return db_test_case
 
-@router.get('/api/test_case/problem/{problem_id}', tags=["Test Cases", "Problems"])
+@router.get('/api/test_case/problem/{problem_id}', tags=["Test Cases", "problems"])
 def read_test_case_problem(problem_id : int):
     db = SessionLocal()
     db_test_case = db.query(TestCase).filter(TestCase.problem_id == problem_id).all()

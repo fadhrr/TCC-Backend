@@ -99,3 +99,17 @@ class ProblemCategory(Base):
     category_id = Column(String, ForeignKey("categories.id"))
     problem_id = Column(Integer, ForeignKey("problems.id"))
     
+class Contest(Base):
+    __tablename__ = "contests" 
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    admin_id = Column(String, ForeignKey('users.id'))
+    title = Column(String)
+    description = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    
+    
+    
