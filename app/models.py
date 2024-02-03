@@ -56,6 +56,7 @@ class Submission(Base):
     status = Column(String)
     time = Column(Integer)
     memory = Column(Integer)
+    code = Column(String, default="")
     created_at = Column(DateTime, default=datetime.utcnow)
     
 

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from models import Submission
+from models import Submission, User
 from pydantic import BaseModel
 from database import SessionLocal
+from sqlalchemy import desc
 
 
 router = APIRouter()
@@ -74,4 +75,41 @@ def read_submission_problems(user_id :int, problem_id : int):
     db = SessionLocal()
     db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).all()
     return db_submission
+
+
+@router.get('/api/users/{problem_id}/submissions/topbytime', tags=["submissions", "users"])
+def get_top_users_by_time(problem_id:int):
+    db = SessionLocal()
+    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.time).limit(5).all()
+    
+    if not db_submissions:
+        raise HTTPException(status_code=404, detail="No submissions found")
+    
+    top_users = []
+    for submission in db_submissions:
+        user_id = submission.user_id
+        user = db.query(User).filter(User.id == user_id).first()
+        time = submission.time
+        top_users.append({"name": user.name, "time": time})
+    
+    return top_users
+
+@router.get('/api/users/problem/{problem_id}/submissions/topbymemory', tags=["submissions", "users"])
+def get_top_users_by_memory(problem_id:int):
+    db = SessionLocal()
+    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.memory).limit(5).all()
+    
+    if not db_submissions:
+        raise HTTPException(status_code=404, detail="No submissions found")
+    
+    top_users = []
+    for submission in db_submissions:
+        user_id = submission.user_id
+        user = db.query(User).filter(User.id == user_id).first()
+        memory = submission.memory
+        top_users.append({"name": user.name, "memory": memory})
+    
+    return top_users
+
+
 
