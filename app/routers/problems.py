@@ -3,8 +3,8 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from database import SessionLocal
-from models import Problem, ProblemCategory
-from sqlalchemy.orm import Session
+from models import Problem, ProblemCategory, Category
+from sqlalchemy.orm import Session, joinedload
 
 router = APIRouter()
 
@@ -19,6 +19,7 @@ class WriteProblemBase(BaseModel):
     sample_output : str
     constraints : str
     explanation : str | None = None
+    
 
 class UpdatedProblemBase(BaseModel):
     title : str | None = None
@@ -35,7 +36,7 @@ class UpdatedProblemBase(BaseModel):
 @router.get('/api/problems', tags=["problems"])
 def read_problems():
     db = SessionLocal()
-    db_problems = db.query(Problem).all()
+    db_problems = db.query(Problem).options(joinedload(Problem.categories)).all()
     return db_problems
     
 @router.get("/api/problems/search", tags=["problems"])
@@ -47,7 +48,7 @@ def search_problem(q : str | None = None):
 @router.get('/api/problem/{problem_id}', tags=["problems"])
 def read_problem(problem_id : int):
     db = SessionLocal()
-    db_problem = db.query(Problem).filter(Problem.id == problem_id).first()
+    db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem_id).first()
     return db_problem
 
 # get router based on category
@@ -134,3 +135,15 @@ def function(problem_id : int):
     
     return {"message" : "Problem deleted successfully"}
     
+# @router.get('/api/problems/categories/{category_name}', tags=["problems", "categories"])
+# def read_problem_categories(category_name : str):
+#     db = SessionLocal()
+#     category = db.query(Category).filter(Category.name == category_name).first()
+#     if category_id is None :
+#         raise HTTPException(status_code=404, detail="Category not found")
+    
+#     db_problem = db.query(Problem).options(joinedload(Problem.categories)).all()
+#     if db_problem is None :
+#         raise HTTPException(status_code=404, detail="Problem not found")
+#     # db_categories = db_problem.categories
+#     return db_problem

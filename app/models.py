@@ -35,8 +35,22 @@ class Problem(Base):
     explanation = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
-    categories = relationship("Category", secondary="problem_categories")
+    categories = relationship("Category", secondary="problem_categories", back_populates="problems")
 
+class Category(Base):
+    __tablename__ = "categories"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String)
+    problems = relationship("Problem", secondary="problem_categories", back_populates="categories")
+    
+    
+class ProblemCategory(Base):
+    __tablename__ = "problem_categories"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    category_id = Column(String, ForeignKey("categories.id"))
+    problem_id = Column(Integer, ForeignKey("problems.id"))
     
 class Language(Base):
     __tablename__ ="languages"
@@ -84,20 +98,7 @@ class Admin(Base):
     updated_at = Column(DateTime, default=datetime.utcnow)
 
 
-class Category(Base):
-    __tablename__ = "categories"
-    
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    name = Column(String)
-    
-    
-    
-class ProblemCategory(Base):
-    __tablename__ = "problem_categories"
-    
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    category_id = Column(String, ForeignKey("categories.id"))
-    problem_id = Column(Integer, ForeignKey("problems.id"))
+
     
 class Contest(Base):
     __tablename__ = "contests" 
