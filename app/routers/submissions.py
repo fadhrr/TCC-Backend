@@ -57,3 +57,21 @@ def delete_submission(submission_id : str):
     
     return {"message" : "submission deleted successfully"}
     
+@router.get('/api/submissions/problem/{problem_id}', tags=["submissions"])
+def read_submission_problems(problem_id :int):
+    db = SessionLocal()
+    db_submission = db.query(Submission).filter(Submission.problem_id == problem_id).all()
+    return db_submission
+
+@router.get('/api/submissions/user/{user_id}', tags=["submissions"])
+def read_submission_problems(user_id :int):
+    db = SessionLocal()
+    db_submission = db.query(Submission).filter(Submission.user_id == user_id).all()
+    return db_submission
+
+@router.get('/api/submissions/user/{user_id}/problem/{problem_id}', tags=["submissions"])
+def read_submission_problems(user_id :int, problem_id : int):
+    db = SessionLocal()
+    db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).all()
+    return db_submission
+
