@@ -325,13 +325,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data untuk tabel `
 --
 
-INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-('1', 'Admin User', 'A12345', 150, 'admin@example.com', NULL, '$2y$12$uDQaa/M2K8duAZG9yk35VeoIDBc0DJNxo.2rYUvtAFzBk3EkO8XP2', NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
-('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, '$2y$12$PeSK.HFauyF26OI33UbhBOvq5aMuluUUyYiZEiwUjPPHQAuXFxVpy', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, '$2y$12$mbFibazcZEc3kXWVhxOjTe/CH0EV10LCyV5RBREmw/FoR66MuQ9nK', NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
+('1', 'Admin User', 'A12345', 150, 'admin@example.com', NULL, NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
 -- Indexes for dumped tables
