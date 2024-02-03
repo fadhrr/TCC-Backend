@@ -15,14 +15,12 @@ class WriteUserBase(BaseModel):
     id : str
     name: str
     nim: str
-    password: str
     score: int | None = None
     email: str
     
 class UpdateUserBase(BaseModel):
     name: str | None = None
     nim: str | None = None
-    password: str | None = None 
     score: int | None = None 
     email: str | None = None
     
@@ -52,7 +50,7 @@ def read_user(user_id : Annotated[int, Path(title="Id user yang ingin diambil")]
 @router.post("/api/user", tags=["users"])
 def write_user(user: WriteUserBase):
     db = SessionLocal()
-    user = User(id = user.id, name=user.name, nim=user.nim, password=user.password, score=0, email=user.email)
+    user = User(id = user.id, name=user.name, nim=user.nim, score=0, email=user.email)
     db.add(user)
     db.commit()
     user_dict = jsonable_encoder(user)
@@ -76,9 +74,6 @@ async def update_user(user_id: int, user_data: UpdateUserBase, db: Session = Dep
     
     if user_data.score is not None :
         user.score = user_data.score
-    
-    if user_data.password is not None :
-        user.password = user_data.password
     
     if user_data.email is not None :
         user.email = user_data.email
