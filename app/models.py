@@ -84,10 +84,17 @@ class TestCase(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-# class TestCaseResult(Base):
-#     __tablename__ = "test_cases_results"
+class TestCaseResult(Base):
+    __tablename__ = "test_case_results"
     
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    submission_id = Column(Integer, ForeignKey("submissions.id"))
+    status = Column(String)
+    time = Column(Integer)
+    memory = Column(Integer)
+    created_at = Column(DateTime, default=datetime.utcnow)
     
+
 class Admin(Base):
     __tablename__ = "admins"
     
@@ -112,6 +119,10 @@ class Contest(Base):
     end_time = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
     
+class ContestParticipant(Base):
+    __tablename__ = "contest_participants"
     
-    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contest_id = Column(Integer, ForeignKey("contests.id"))
+    user_id = Column(String, ForeignKey("users.id"))
     

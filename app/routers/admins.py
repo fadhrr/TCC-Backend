@@ -11,19 +11,19 @@ class WriteAdminBase(BaseModel):
     user_id : str
     role : int | None = None
 
-@router.get('/api/admins', tags=["admins"])
+@router.get('/api/admins', tags=["Admin"])
 def read_all_admins ():
     db = SessionLocal()    
     db_admins_data = db.query(Admin).all()
     return db_admins_data
 
-@router.get('/api/admin/{admin_id}', tags=["admins"])
+@router.get('/api/admin/{admin_id}', tags=["Admin"])
 def read_admin(admin_id:str):
     db = SessionLocal()
     db_admin_data = db.query(Admin).filter(Admin.id == admin_id).first()
     return db_admin_data
 
-@router.post('/api/admin', tags=["admins"])
+@router.post('/api/admin', tags=["Admin"])
 def write_admin(new_admin : WriteAdminBase):
     db = SessionLocal()
     db_new_admin = Admin(id = new_admin.id, user_id = new_admin.user_id)
@@ -38,7 +38,7 @@ def write_admin(new_admin : WriteAdminBase):
     db.refresh(db_new_admin)
     return {"message" : "Admin created successfully"}
     
-@router.delete('/api/admin/{admin_id}', tags=["admins"])
+@router.delete('/api/admin/{admin_id}', tags=["Admin"])
 def delete_admin(admin_id : str):
     db = SessionLocal()
     admin_data = db.query(Admin).filter(Admin.id == admin_id).first()

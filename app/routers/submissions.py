@@ -15,21 +15,21 @@ class WriteSubmissionBase(BaseModel):
     time : int
     memory : int
 
-@router.get('/api/submissions', tags=["submissions"])
+@router.get('/api/submissions', tags=["Submission"])
 def read_all_submissions ():
     db = SessionLocal()    
     db_submissions_data = db.query(Submission).all()
     return db_submissions_data
 
 
-@router.get('/api/submission/{submission_id}', tags=["submissions"])
+@router.get('/api/submission/{submission_id}', tags=["Submission"])
 def read_submission(submission_id:str):
     db = SessionLocal()
     db_submission_data = db.query(Submission).filter(Submission.id == submission_id).first()
     return db_submission_data
 
 
-@router.post('/api/submission', tags=["submissions"])
+@router.post('/api/submission', tags=["Submission"])
 def write_submission(new_submission : WriteSubmissionBase):
     db = SessionLocal()
     db_new_submission = Submission(
@@ -47,7 +47,7 @@ def write_submission(new_submission : WriteSubmissionBase):
     return {"message" : "submission created successfully"}
     
     
-@router.delete('/api/submission/{submission_id}', tags=["submissions"])
+@router.delete('/api/submission/{submission_id}', tags=["Submission"])
 def delete_submission(submission_id : str):
     db = SessionLocal()
     submission_data = db.query(Submission).filter(Submission.id == submission_id).first()
@@ -58,26 +58,26 @@ def delete_submission(submission_id : str):
     
     return {"message" : "submission deleted successfully"}
     
-@router.get('/api/submissions/problem/{problem_id}', tags=["submissions"])
+@router.get('/api/submissions/problem/{problem_id}', tags=["Submission"])
 def read_submission_problems(problem_id :int):
     db = SessionLocal()
     db_submission = db.query(Submission).filter(Submission.problem_id == problem_id).all()
     return db_submission
 
-@router.get('/api/submissions/user/{user_id}', tags=["submissions"])
+@router.get('/api/submissions/user/{user_id}', tags=["Submission"])
 def read_submission_problems(user_id :int):
     db = SessionLocal()
     db_submission = db.query(Submission).filter(Submission.user_id == user_id).all()
     return db_submission
 
-@router.get('/api/submissions/user/{user_id}/problem/{problem_id}', tags=["submissions"])
+@router.get('/api/submissions/user/{user_id}/problem/{problem_id}', tags=["Submission"])
 def read_submission_problems(user_id :int, problem_id : int):
     db = SessionLocal()
     db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).all()
     return db_submission
 
 
-@router.get('/api/users/{problem_id}/submissions/topbytime', tags=["submissions", "users"])
+@router.get('/api/users/{problem_id}/submissions/topbytime', tags=["Submission", "User"])
 def get_top_users_by_time(problem_id:int):
     db = SessionLocal()
     db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.time).limit(5).all()
@@ -94,7 +94,7 @@ def get_top_users_by_time(problem_id:int):
     
     return top_users
 
-@router.get('/api/users/problem/{problem_id}/submissions/topbymemory', tags=["submissions", "users"])
+@router.get('/api/users/problem/{problem_id}/submissions/topbymemory', tags=["Submission", "User"])
 def get_top_users_by_memory(problem_id:int):
     db = SessionLocal()
     db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.memory).limit(5).all()

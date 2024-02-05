@@ -33,33 +33,33 @@ class UpdatedProblemBase(BaseModel):
     constraints : str | None = None
     explanation : str | None = None
 
-@router.get('/api/problems', tags=["problems"])
+@router.get('/api/problems', tags=["Problem"])
 def read_problems():
     db = SessionLocal()
     db_problems = db.query(Problem).options(joinedload(Problem.categories)).all()
     return db_problems
     
-@router.get("/api/problems/search", tags=["problems"])
+@router.get("/api/problems/search", tags=["Problem"])
 def search_problem(q : str | None = None):
     db = SessionLocal()
     items = db.query(Problem).filter(Problem.title.contains(q)).all()
     return items
 
-@router.get('/api/problem/{problem_id}', tags=["problems"])
+@router.get('/api/problem/{problem_id}', tags=["Problem"])
 def read_problem(problem_id : int):
     db = SessionLocal()
     db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem_id).first()
     return db_problem
 
 # get router based on category
-@router.get('/api/problems/{category_id}', tags=["problems", "categories"])
+@router.get('/api/problems/{category_id}', tags=["Problem", "Category"])
 def read_problem_category(category_id : int):
     db = SessionLocal()
     db_problem = db.query(Problem).join(ProblemCategory).filter(ProblemCategory.category_id == category_id).all()
     return db_problem
 
 
-@router.post('/api/problem', tags=["problems"])
+@router.post('/api/problem', tags=["Problem"])
 def create_problem(new_problem : WriteProblemBase):
     db = SessionLocal()
     problem = Problem(
@@ -81,7 +81,7 @@ def create_problem(new_problem : WriteProblemBase):
     db.refresh(problem)
     return {"message": "Problems created successfully"}
 
-@router.put('/api/problem/{problem_id}', tags=["problems"])
+@router.put('/api/problem/{problem_id}', tags=["Problem"])
 def update_problem(problem_id : int, new_problem : UpdatedProblemBase):
     db = SessionLocal()
     old_problem = db.query(Problem).filter(Problem.id == problem_id).first()
@@ -124,7 +124,7 @@ def update_problem(problem_id : int, new_problem : UpdatedProblemBase):
     
     return { "message" : "Problem updated successfully"}
 
-@router.delete('/api/problems/{problem_id}', tags=["problems"])
+@router.delete('/api/problems/{problem_id}', tags=["Problem"])
 def function(problem_id : int):
     db = SessionLocal()
     problem = db.query(Problem).filter(Problem.id==problem_id).first()

@@ -7,7 +7,7 @@ from database import engine, SessionLocal
 import models
 from typing import Annotated
 from pydantic import BaseModel
-from routers import users, problems, admins, languages, submissions, categories, test_cases, contests
+from routers import users, problems, admins, languages, submissions, categories, test_cases, contests, test_case_results, contest_participants
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -41,14 +41,15 @@ app.add_middleware(
 def redirect():
     return RedirectResponse('/docs')
 
-
+# router 
 app.include_router(users.router)
 app.include_router(problems.router)
 app.include_router(admins.router)
 app.include_router(submissions.router)
 app.include_router(languages.router)
 app.include_router(categories.router)
-app.include_router(test_cases.router)
 app.include_router(contests.router)
-
+app.include_router(test_cases.router)
+app.include_router(test_case_results.router)
+app.include_router(contest_participants)
 

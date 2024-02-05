@@ -9,7 +9,7 @@ class WriteLanguageBase(BaseModel):
     
 router = APIRouter()
 
-@router.post('/api/language', tags={"languages"})
+@router.post('/api/language', tags={"Language"})
 def write_language(new_lg : WriteLanguageBase):
     db = SessionLocal()
     db_lg = Language(name = new_lg.name)

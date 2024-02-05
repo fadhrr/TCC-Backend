@@ -21,13 +21,13 @@ class UpdateContestBase(BaseModel):
     end_time : datetime | None = None
 
 
-@router.get('/api/contests', tags=["contests"])
+@router.get('/api/contests', tags=["Contest"])
 def read_all_contests():
     db = SessionLocal()
     db_contests = db.query(Contest).all()
     return db_contests
 
-@router.get('/api/contest/{contest_id}', tags=["contests"])
+@router.get('/api/contest/{contest_id}', tags=["Contest"])
 def read_contest(contest_id:int):
     db = SessionLocal()
     
@@ -37,7 +37,7 @@ def read_contest(contest_id:int):
         raise HTTPException(status_code = 404, detail="Contest Not Found")
     return db_contest
     
-@router.post('/api/contest', tags=["contests"])
+@router.post('/api/contest', tags=["Contest"])
 def write_contest(new_contest : WriteContestBase):
     db = SessionLocal()
     new_db_contest = Contest(
@@ -53,7 +53,7 @@ def write_contest(new_contest : WriteContestBase):
     db.refresh(new_db_contest)
     return {"message" : "Contest created successfully"}
 
-@router.put('/api/contest/{contest_id}', tags=["contests"])
+@router.put('/api/contest/{contest_id}', tags=["Contest"])
 def update_contest(contest_id : int, updated_contest : UpdateContestBase):
     db = SessionLocal()
     new_updated_contest = db.query(Contest).filter(Contest.id == contest_id).first()
@@ -81,7 +81,7 @@ def update_contest(contest_id : int, updated_contest : UpdateContestBase):
     
     return {"message" : "Contest updated succesfully"}
 
-@router. delete('/api/contest/{contest_id}', tags=["contests"])
+@router. delete('/api/contest/{contest_id}', tags=["Contest"])
 def delete_contest(contest_id : int):
     db = SessionLocal()
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()

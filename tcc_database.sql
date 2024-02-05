@@ -309,6 +309,32 @@ INSERT INTO `test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `test_case_results`
+--
+
+CREATE TABLE `test_case_results` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `submission_id` bigint(20) UNSIGNED NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `time` int(11) NOT NULL,
+  `memory` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `test_case_results`
+--
+
+INSERT INTO `test_case_results` (`id`, `submission_id`, `status`, `time`, `memory`, `created_at`) VALUES
+(1, 1, 'Accepted', 10, 256, '2024-01-26 10:28:43'),
+(2, 1, 'Wrong Answer', 15, 512, '2024-01-26 10:28:43'),
+(3, 1, 'Compile Error', 15, 128, '2024-01-26 10:28:43'),
+(4, 2, 'Accepted', 15, 512, '2024-01-26 10:28:43'),
+(5, 2, 'Wrong Answer', 15, 512, '2024-01-26 10:28:43'),
+(6, 3, 'Compile Error', 5, 128, '2024-01-26 10:28:43');
+
+
+--
 -- Struktur dari tabel `users`
 --
 

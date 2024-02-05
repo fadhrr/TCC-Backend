@@ -33,13 +33,13 @@ def get_db():
     
 
 
-@router.get("/api/users", tags=["users"])
+@router.get("/api/users", tags=["User"])
 def read_all_users():
     db = SessionLocal()
     users = db.query(User).all()
     return users
 
-@router.get("/api/user/{user_id}", tags=["users"])
+@router.get("/api/user/{user_id}", tags=["User"])
 def read_user(user_id : Annotated[int, Path(title="Id user yang ingin diambil")]):
     db = SessionLocal();
     user = db.query(User).filter(User.id == user_id).first()
@@ -47,7 +47,7 @@ def read_user(user_id : Annotated[int, Path(title="Id user yang ingin diambil")]
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.post("/api/user", tags=["users"])
+@router.post("/api/user", tags=["User"])
 def write_user(user: WriteUserBase):
     db = SessionLocal()
     user = User(id = user.id, name=user.name, nim=user.nim, score=0, email=user.email)
@@ -59,7 +59,7 @@ def write_user(user: WriteUserBase):
         "user" : user_dict
     })
 
-@router.put("/api/user/{user_id}", tags=["users"])
+@router.put("/api/user/{user_id}", tags=["User"])
 async def update_user(user_id: int, user_data: UpdateUserBase, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
 
@@ -84,7 +84,7 @@ async def update_user(user_id: int, user_data: UpdateUserBase, db: Session = Dep
 
     return {"message": "User updated successfully"}
 
-@router.delete("/api/user/{user_id}", tags=["users"])
+@router.delete("/api/user/{user_id}", tags=["User"])
 def delete_user(user_id: Annotated[int, Path(title="Id user yang ingin di delete")]):
     db = SessionLocal()
     user = db.query(User).filter(User.id==user_id).first()
@@ -95,7 +95,7 @@ def delete_user(user_id: Annotated[int, Path(title="Id user yang ingin di delete
     
     return {"message" : "User deleted successfully"}
    
-@router.get("/api/leaderboard", tags=["users"])
+@router.get("/api/leaderboard", tags=["User"])
 def get_leaderboard():
     db = SessionLocal()
     user = db.query(User).order_by(desc(User.score)).all()
