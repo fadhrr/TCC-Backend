@@ -51,5 +51,5 @@ app.include_router(categories.router)
 app.include_router(contests.router)
 app.include_router(test_cases.router)
 app.include_router(test_case_results.router)
-app.include_router(contest_participants)
+app.include_router(contest_participants.router)
 

@@ -10,7 +10,7 @@ class WriteContestParticipantBase(BaseModel):
     contest_id : int
     user_id : str
 
-@router.get("/api/contest/participants", tags=["Contest", "Contest Participants"]);
+@router.get("/api/contest/participants", tags=["Contest", "Contest Participants"])
 def read_all_participants():
     db = SessionLocal()
     db_contest_participants = db.query(ContestParticipant).all()
