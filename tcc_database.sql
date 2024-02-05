@@ -335,6 +335,23 @@ INSERT INTO `test_case_results` (`id`, `submission_id`, `status`, `time`, `memor
 
 
 --
+-- Struktur tabel `contest_participants`
+--
+
+CREATE TABLE `contest_participants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `contest_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `contest_participants` (`id`, `contest_id`,`user_id`) VALUES
+(1, 1, '1'),
+(2, 1, '2'),
+(3, 2, '1'),
+(4, 2, '3'),
+(5, 1, '3');
+
+--
 -- Struktur dari tabel `users`
 --
 
