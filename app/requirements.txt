@@ -3,3 +3,4 @@ PyMySQL==1.1.0
 uvicorn[standard]
 SQLAlchemy==2.0.25
 sqlmodel==0.0.14
+requests==2.31.0
