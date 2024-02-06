@@ -11,7 +11,7 @@ class WriteSubmissionBase(BaseModel):
     user_id : str
     problem_id : int
     language_id : int
-    status : str | None = None
+    
     time : int
     memory : int
     code : str
@@ -37,7 +37,6 @@ def write_submission(new_submission : WriteSubmissionBase):
         user_id = new_submission.user_id,
         problem_id = new_submission.problem_id,
         language_id = new_submission.language_id,
-        status = new_submission.status,
         time = new_submission.time,
         memory = new_submission.memory,
         code = new_submission.code
@@ -46,6 +45,8 @@ def write_submission(new_submission : WriteSubmissionBase):
     db.add(db_new_submission)
     db.commit()
     db.refresh(db_new_submission)
+    
+    
     return {"message" : "submission created successfully"}
     
     
