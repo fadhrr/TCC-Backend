@@ -11,9 +11,10 @@ class WriteSubmissionBase(BaseModel):
     user_id : str
     problem_id : int
     language_id : int
-    status : str
+    status : str | None = None
     time : int
     memory : int
+    code : str
 
 @router.get('/api/submissions', tags=["Submission"])
 def read_all_submissions ():
@@ -39,6 +40,7 @@ def write_submission(new_submission : WriteSubmissionBase):
         status = new_submission.status,
         time = new_submission.time,
         memory = new_submission.memory,
+        code = new_submission.code
         )
     
     db.add(db_new_submission)

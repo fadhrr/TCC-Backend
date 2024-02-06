@@ -261,7 +261,7 @@ CREATE TABLE `submissions` (
   `user_id` varchar(40) NOT NULL,
   `problem_id` bigint(20) UNSIGNED NOT NULL,
   `language_id` bigint(20) UNSIGNED NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `status` varchar(255) NULL DEFAULT NULL,
   `time` int(11) NOT NULL,
   `memory` int(11) NOT NULL,
   `code` text NOT NULL,

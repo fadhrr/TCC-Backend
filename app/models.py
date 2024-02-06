@@ -67,7 +67,7 @@ class Submission(Base):
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     problem_id = Column(Integer, ForeignKey("problems.id"))
     language_id = Column(Integer, ForeignKey("languages.id"))
-    status = Column(String)
+    status = Column(String, default=None)
     time = Column(Integer)
     memory = Column(Integer)
     code = Column(String, default="")
