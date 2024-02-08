@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models import Admin
+from models import Admin, User
 from pydantic import BaseModel
 from database import SessionLocal
 
@@ -15,7 +15,19 @@ class WriteAdminBase(BaseModel):
 def read_all_admins ():
     db = SessionLocal()    
     db_admins_data = db.query(Admin).all()
-    return db_admins_data
+    value = []
+    for admin in db_admins_data:
+        role = "Assistant" if admin.role == 1 else "Admin"
+        user_data = db.query(User).filter(User.id == admin.user_id).first()
+        value.append({
+            "name" : user_data.name,
+            "id" : user_data.id,
+            "email" : user_data.email,
+            "score" : user_data.score,
+            "nim" : user_data.nim,
+            "role" : role 
+        })
+    return value
 
 @router.get('/api/admin/{admin_id}', tags=["Admin"])
 def read_admin(admin_id:str):
@@ -52,15 +64,40 @@ def delete_admin(admin_id : str):
 @router.get("/api/role/assistants", tags=["User", "Admin", "Assistant"])
 def get_assistant():
     db = SessionLocal()
-    user = db.query(Admin).filter(Admin.role == 1).first()
-    if user is None:
+    users = db.query(Admin).filter(Admin.role == 1).all()
+    if users is None:
         raise HTTPException(status_code=404, detail="Assistant not found")
-    return user
+    value = []
+    for admin in users:
+        role = "Assistant" if admin.role == 1 else "Admin"
+        user_data = db.query(User).filter(User.id == admin.user_id).first()
+        value.append({
+            "name" : user_data.name,
+            "id" : user_data.id,
+            "email" : user_data.email,
+            "score" : user_data.score,
+            "nim" : user_data.nim,
+            "role" : role 
+        })
+    return users
 
 @router.get("/api/role/admins", tags=["User", "Admin", "Assistant"])
 def get_assistant():
     db = SessionLocal()
-    user = db.query(Admin).filter(Admin.role == 2).first()
-    if user is None:
+    users = db.query(Admin).filter(Admin.role == 2).all()
+    if users is None:
         raise HTTPException(status_code=404, detail="Assistant not found")
-    return user
+    
+    value = []
+    for admin in users:
+        role = "Assistant" if admin.role == 1 else "Admin"
+        user_data = db.query(User).filter(User.id == admin.user_id).first()
+        value.append({
+            "name" : user_data.name,
+            "id" : user_data.id,
+            "email" : user_data.email,
+            "score" : user_data.score,
+            "nim" : user_data.nim,
+            "role" : role 
+        })
+    return value
