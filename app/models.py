@@ -43,6 +43,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String)
     problems = relationship("Problem", secondary="problem_categories", back_populates="categories")
+    local_problems = relationship("LocalProblem", secondary="local_problem_categories", back_populates="categories")
     
     
 class ProblemCategory(Base):
@@ -104,9 +105,6 @@ class Admin(Base):
     created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
 
-
-
-    
 class Contest(Base):
     __tablename__ = "contests" 
     
@@ -126,3 +124,100 @@ class ContestParticipant(Base):
     contest_id = Column(Integer, ForeignKey("contests.id"))
     user_id = Column(String, ForeignKey("users.id"))
     
+class ContestProblem(Base):
+    __tablename__ = "contest_problems"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contest_id = Column(Integer, ForeignKey("contests.id"))
+    problem_id = Column(Integer, ForeignKey("problems.id"))
+
+################## LOCAL ######################
+
+class LocalContest(Base):
+    __tablename__ = "local_contests"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    admin_id = Column(String, ForeignKey('users.id'))
+    title = Column(String)
+    slug = Column(String)
+    description = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    
+class LocalContestParticipant(Base):
+    __tablename__ = "local_contest_participants"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contest_id = Column(Integer, ForeignKey("local_contests.id"))
+    user_id = Column(String, ForeignKey("users.id"))
+
+class LocalContestProblem(Base):
+    __tablename__ = "local_contest_problems"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contest_id = Column(Integer, ForeignKey("local_contests.id"))
+    problem_id = Column(Integer, ForeignKey("problems.id"))
+
+class LocalProblem(Base):
+    __tablename__ = "local_problems"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title = Column(String(255))
+    description = Column(String)
+    time_limit = Column(Integer)
+    memory_limit = Column(Integer)
+    input_format = Column(String)
+    sample_input = Column(String)
+    output_format = Column(String)
+    sample_output = Column(String)
+    constraints = Column(String)
+    explanation = Column(String, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    categories = relationship("Category", secondary="local_problem_categories", back_populates="local_problems")
+
+class LocalSubmission(Base):
+    __tablename__ = "local_submissions"
+    
+    id = Column(Integer, primary_key=True, index= True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    problem_id = Column(Integer, ForeignKey("local_problems.id"))
+    language_id = Column(Integer, ForeignKey("languages.id"))
+    status = Column(String, default=None)
+    time = Column(Float)
+    memory = Column(Integer)
+    code = Column(String, default="")
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+
+class LocalTestCase(Base):
+    __tablename__ = "local_test_cases"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    problem_id = Column(Integer, ForeignKey("local_problems.id"))
+    input = Column(String)
+    output = Column(String)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+
+class LocalTestCaseResult(Base):
+    __tablename__ = "local_test_case_results"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    submission_id = Column(Integer, ForeignKey("local_submissions.id"))
+    status = Column(String, default=None)
+    time = Column(Float, default=None)
+    memory = Column(Integer, default=None)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+
+
+class LocalProblemCategory(Base):
+    __tablename__ = "local_problem_categories"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    category_id = Column(String, ForeignKey("categories.id"))
+    problem_id = Column(Integer, ForeignKey("local_problems.id"))
+    
+
+
+

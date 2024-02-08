@@ -96,6 +96,30 @@ INSERT INTO `contests` (`id`, `admin_id`, `title`, `slug`, `description`, `start
 (1, '1', 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:28:43', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (2, '2', 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-02-05 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (3, '1', 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-02-15 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+--
+-- Struktur dari tabel `local_contests`
+--
+
+CREATE TABLE `local_contests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `admin_id` varchar(40) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `start_time` timestamp NULL DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_contests`
+--
+
+INSERT INTO `local_contests` (`id`, `admin_id`, `title`, `slug`, `description`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
+(1, '1', 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:28:43', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-02-05 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-02-15 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -231,6 +255,35 @@ INSERT INTO `problems` (`id`, `title`, `description`, `time_limit`, `memory_limi
 (6, 'Menentukan Bilangan Genap atau Ganjil', 'Buatlah program yang menerima satu bilangan bulat dan menentukan apakah bilangan tersebut genap atau ganjil.', 1, 16, 'Satu baris berisi satu bilangan bulat.', '7', 'Satu baris berisi \"GENAP\" jika bilangan genap dan \"GANJIL\" jika bilangan ganjil.', 'GANJIL', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9.', 'Program harus menentukan apakah bilangan 7 adalah genap atau ganjil dan mengeluarkan hasil \"GANJIL\".', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 (7, 'Menyusun String', 'Buatlah program yang menerima sebuah string dan mengembalikan string baru yang terdiri dari karakter-karakter unik yang disusun dalam urutan abjad.', 2, 32, 'Satu baris berisi sebuah string.', 'programming', 'Satu baris berisi string baru yang terdiri dari karakter-karakter unik dalam urutan abjad.', 'agimmnoprr', 'Panjang string tidak melebihi 1000 karakter.', 'Program harus menyusun karakter-karakter unik dari string \"programming\" dalam urutan abjad, sehingga menghasilkan string \"agimmnoprr\".', '2024-01-26 10:28:42', '2024-01-26 10:28:42');
 
+CREATE TABLE `local_problems` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `time_limit` int(11) NOT NULL,
+  `memory_limit` int(11) NOT NULL,
+  `input_format` text NOT NULL,
+  `sample_input` text NOT NULL,
+  `output_format` text NOT NULL,
+  `sample_output` text NOT NULL,
+  `constraints` text NOT NULL,
+  `explanation` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_problems`
+--
+
+INSERT INTO `local_problems` (`id`, `title`, `description`, `time_limit`, `memory_limit`, `input_format`, `sample_input`, `output_format`, `sample_output`, `constraints`, `explanation`, `created_at`, `updated_at`) VALUES
+(1, 'Penjumlahan Sederhana', 'Buatlah program yang menerima dua bilangan bulat dan mengeluarkan hasil penjumlahannya.', 1, 16, 'Dua baris berisi satu bilangan bulat tiap baris.', '3\n5', 'Satu baris berisi hasil penjumlahan kedua bilangan.', '8', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9.', 'Program harus membaca dua bilangan (3 dan 5), dan mengeluarkan hasil penjumlahannya (8).', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(2, 'Menghitung Faktorial', 'Buatlah program yang menghitung faktorial dari sebuah bilangan bulat positif.', 2, 32, 'Satu baris berisi satu bilangan bulat n (0 ≤ n ≤ 10).', '5', 'Satu baris berisi hasil faktorial dari n.', '120', 'Program harus dapat menangani nilai n dari 0 hingga 10.', 'Program harus menghitung 5! (5 faktorial), yang merupakan hasil perkalian 5 × 4 × 3 × 2 × 1 = 120.', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(3, 'Bilangan Prima', 'Buatlah program yang menentukan apakah suatu bilangan bulat positif adalah bilangan prima atau bukan.', 3, 64, 'Satu baris berisi satu bilangan bulat n (1 ≤ n ≤ 10^5).', '11', 'Satu baris berisi \"YA\" jika n adalah bilangan prima, dan \"BUKAN\" jika tidak.', 'YA', 'Program harus dapat menangani nilai n dari 1 hingga 10^5.', 'Program harus mengecek apakah bilangan 11 adalah bilangan prima atau tidak. Karena 11 hanya dapat dibagi oleh 1 dan 11, maka bilangan tersebut adalah bilangan prima.', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(4, 'Penyusunan Angka', 'Andi memiliki sebuah array berisi n bilangan bulat. Dia ingin menyusun ulang array tersebut sehingga bilangan-bilangan yang berdekatan memiliki perbedaan absolut maksimum. Bantulah Andi menemukan susunan yang memenuhi kondisi tersebut.', 4, 128, 'Baris pertama berisi satu bilangan bulat n (1 ≤ n ≤ 10^5), jumlah bilangan dalam array. Baris kedua berisi n bilangan bulat yang dipisahkan oleh spasi, masing-masing bernilai antara -10^9 hingga 10^9.', '6\n3 5 1 8 2 7', 'Satu baris berisi susunan ulang array yang memenuhi kondisi.', '7 2 8 1 5 3', 'Program harus dapat menangani nilai n dari 1 hingga 10^5.', 'Susunan ulang yang memenuhi kondisi adalah [7, 2, 8, 1, 5, 3]. Perbedaan absolut antara bilangan berdekatan adalah maksimum.', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(5, 'Deret Fibonacci Termodifikasi', 'Diberikan sebuah deret Fibonacci termodifikasi sebagai berikut: F(1) = a, F(2) = b, dan F(n) = F(n-1)^2 + F(n-2) untuk n > 2. Tulislah program untuk menghitung nilai F(n) untuk suatu n yang diberikan.', 5, 256, 'Satu baris berisi dua bilangan bulat a dan b (1 ≤ a, b ≤ 10^9) yang merupakan nilai awal deret Fibonacci termodifikasi. Baris kedua berisi satu bilangan bulat n (1 ≤ n ≤ 10^5).', '2 5\n4', 'Satu baris berisi nilai F(n) dari deret termodifikasi.', '181', 'Program harus dapat menangani nilai a, b, dan n hingga 10^9.', 'Deret termodifikasi untuk a = 2, b = 5 adalah: 2, 5, 29, 870, 756250. Nilai F(4) dari deret ini adalah 181.', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(6, 'Menentukan Bilangan Genap atau Ganjil', 'Buatlah program yang menerima satu bilangan bulat dan menentukan apakah bilangan tersebut genap atau ganjil.', 1, 16, 'Satu baris berisi satu bilangan bulat.', '7', 'Satu baris berisi \"GENAP\" jika bilangan genap dan \"GANJIL\" jika bilangan ganjil.', 'GANJIL', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9.', 'Program harus menentukan apakah bilangan 7 adalah genap atau ganjil dan mengeluarkan hasil \"GANJIL\".', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(7, 'Menyusun String', 'Buatlah program yang menerima sebuah string dan mengembalikan string baru yang terdiri dari karakter-karakter unik yang disusun dalam urutan abjad.', 2, 32, 'Satu baris berisi sebuah string.', 'programming', 'Satu baris berisi string baru yang terdiri dari karakter-karakter unik dalam urutan abjad.', 'agimmnoprr', 'Panjang string tidak melebihi 1000 karakter.', 'Program harus menyusun karakter-karakter unik dari string \"programming\" dalam urutan abjad, sehingga menghasilkan string \"agimmnoprr\".', '2024-01-26 10:28:42', '2024-01-26 10:28:42');
+
 -- --------------------------------------------------------
 
 --
@@ -248,6 +301,26 @@ CREATE TABLE `problem_categories` (
 --
 
 INSERT INTO `problem_categories` (`id`, `problem_id`, `category_id`) VALUES
+(1, 2, 3),
+(2, 1, 4),
+(3, 2, 1),
+(4, 3, 3);
+
+--
+-- Struktur dari tabel `local_problem_categories`
+--
+
+CREATE TABLE `local_problem_categories` (
+  `id` int(11) NOT NULL,
+  `problem_id` int(10) UNSIGNED NOT NULL,
+  `category_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `local_problem_categories`
+--
+
+INSERT INTO `local_problem_categories` (`id`, `problem_id`, `category_id`) VALUES
 (1, 2, 3),
 (2, 1, 4),
 (3, 2, 1),
@@ -281,6 +354,29 @@ INSERT INTO `submissions` (`id`, `user_id`, `problem_id`, `language_id`, `status
 (2, '2', 3, 2, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (3, '1', 6, 3, 'CTE', 0.15, 128, 'def print_message():\\n    print(\"CE\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
+
+CREATE TABLE `local_submissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(40) NOT NULL,
+  `problem_id` bigint(20) UNSIGNED NOT NULL,
+  `language_id` bigint(20) UNSIGNED NOT NULL,
+  `status` varchar(3) NULL DEFAULT NULL,
+  `time` float(5,3) NOT NULL,
+  `memory` int(11) NOT NULL,
+  `code` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_submissions`
+--
+
+INSERT INTO `local_submissions` (`id`, `user_id`, `problem_id`, `language_id`, `status`, `time`, `memory`, `code`, `created_at`, `updated_at`) VALUES
+(1, '1', 1, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 3, 2, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 6, 3, 'CTE', 0.15, 128, 'def print_message():\\n    print(\"CE\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+
 -- --------------------------------------------------------
 
 --
@@ -301,6 +397,32 @@ CREATE TABLE `test_cases` (
 --
 
 INSERT INTO `test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `updated_at`) VALUES
+(1, 1, '3\n5', '8', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(2, 2, '5', '120', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(3, 3, '11', 'YA', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(4, 4, '6\n3 5 1 8 2 7', '7 2 8 1 5 3', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(5, 5, '2 5\n4', '181', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(6, 6, '7', 'GANJIL', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(7, 7, 'programming', 'agimmnoprr', '2024-01-26 10:28:42', '2024-01-26 10:28:42');
+
+--
+-- Struktur dari tabel `local_test_cases`
+--
+
+CREATE TABLE `local_test_cases` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `problem_id` bigint(20) UNSIGNED NOT NULL,
+  `input` varchar(255) NOT NULL,
+  `output` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_test_cases`
+--
+
+INSERT INTO `local_test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `updated_at`) VALUES
 (1, 1, '3\n5', '8', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 (2, 2, '5', '120', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 (3, 3, '11', 'YA', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
@@ -335,6 +457,30 @@ INSERT INTO `test_case_results` (`id`, `submission_id`, `status`, `time`, `memor
 (4, 2, 'AC', 0.15, 512, '2024-01-26 10:28:43'),
 (5, 2, 'WA', 0.15, 512, '2024-01-26 10:28:43'),
 (6, 3, 'CTE', 0.5, 128, '2024-01-26 10:28:43');
+--
+-- Struktur dari tabel `local_test_case_results`
+--
+
+CREATE TABLE `local_test_case_results` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `submission_id` bigint(20) UNSIGNED NOT NULL,
+  `status` varchar(3) NULL DEFAULT NULL,
+  `time` float(5,3) NULL DEFAULT NULL,
+  `memory` int(11) NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_test_case_results`
+--
+
+INSERT INTO `local_test_case_results` (`id`, `submission_id`, `status`, `time`, `memory`, `created_at`) VALUES
+(1, 1, 'AC', 0.10, 256, '2024-01-26 10:28:43'),
+(2, 1, 'WA', 0.15, 512, '2024-01-26 10:28:43'),
+(3, 1, 'CTE', 0.15, 128, '2024-01-26 10:28:43'),
+(4, 2, 'AC', 0.15, 512, '2024-01-26 10:28:43'),
+(5, 2, 'WA', 0.15, 512, '2024-01-26 10:28:43'),
+(6, 3, 'CTE', 0.5, 128, '2024-01-26 10:28:43');
 
 
 --
@@ -348,6 +494,23 @@ CREATE TABLE `contest_participants` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `contest_participants` (`id`, `contest_id`,`user_id`) VALUES
+(1, 1, '1'),
+(2, 1, '2'),
+(3, 2, '1'),
+(4, 2, '3'),
+(5, 1, '3');
+
+--
+-- Struktur tabel `local_contest_participants`
+--
+
+CREATE TABLE `local_contest_participants` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `contest_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `local_contest_participants` (`id`, `contest_id`,`user_id`) VALUES
 (1, 1, '1'),
 (2, 1, '2'),
 (3, 2, '1'),
@@ -381,6 +544,53 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 ('4', 'Fajry', '2108107010059', 0, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
+-- Struktur dari tabel `contest_problems`
+--
+
+CREATE TABLE `contest_problems` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `contest_id` bigint(20) UNSIGNED NOT NULL,
+  `problem_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `contest_problems`
+--
+
+INSERT INTO `contest_problems` (`id`, `contest_id`, `problem_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 2, 4),
+(5, 2, 5),
+(6, 2, 6),
+(7, 2, 7);
+
+--
+-- Strultur dari tabel `local_contest_problems`
+--
+
+CREATE TABLE `local_contest_problems` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `contest_id` bigint(20) UNSIGNED NOT NULL,
+  `problem_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `local_contest_problems`
+--
+
+INSERT INTO `local_contest_problems` (`id`, `contest_id`, `problem_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 2, 4),
+(5, 2, 5),
+(6, 2, 6),
+(7, 2, 7);
+
+
+--
 -- Indexes for dumped tables
 --
 
@@ -403,6 +613,12 @@ ALTER TABLE `categories`
 ALTER TABLE `contests`
   ADD PRIMARY KEY (`id`),
   ADD KEY `contests_admin_id_foreign` (`admin_id`);
+--
+-- Indeks untuk tabel `local_contests`
+--
+ALTER TABLE `local_contests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `local_contests_admin_id_foreign` (`admin_id`);
 
 --
 -- Indeks untuk tabel `failed_jobs`
@@ -444,6 +660,12 @@ ALTER TABLE `problems`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `local_problems`
+--
+ALTER TABLE `local_problems`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `problem_categories`
 --
 ALTER TABLE `problem_categories`
@@ -454,6 +676,11 @@ ALTER TABLE `problem_categories`
 --
 ALTER TABLE `submissions`
   ADD PRIMARY KEY (`id`);
+--
+-- Indeks untuk tabel `local_submissions`
+--
+ALTER TABLE `local_submissions`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `test_cases`
@@ -461,6 +688,12 @@ ALTER TABLE `submissions`
 ALTER TABLE `test_cases`
   ADD PRIMARY KEY (`id`),
   ADD KEY `test_cases_problem_id_foreign` (`problem_id`);
+--
+-- Indeks untuk tabel `local_test_cases`
+--
+ALTER TABLE `local_test_cases`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `local_test_cases_problem_id_foreign` (`problem_id`);
 
 --
 -- Indeks untuk tabel `users`
@@ -483,6 +716,11 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT untuk tabel `contests`
 --
 ALTER TABLE `contests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT untuk tabel `local_contests`
+--
+ALTER TABLE `local_contests`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -516,6 +754,12 @@ ALTER TABLE `problems`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT untuk tabel `local_problems`
+--
+ALTER TABLE `local_problems`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT untuk tabel `problem_categories`
 --
 ALTER TABLE `problem_categories`
@@ -526,11 +770,22 @@ ALTER TABLE `problem_categories`
 --
 ALTER TABLE `submissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  
+--
+-- AUTO_INCREMENT untuk tabel `local_submissions`
+--
+ALTER TABLE `local_submissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `test_cases`
 --
 ALTER TABLE `test_cases`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT untuk tabel `local_test_cases`
+--
+ALTER TABLE `local_test_cases`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
@@ -550,10 +805,22 @@ ALTER TABLE `contests`
   ADD CONSTRAINT `contests_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`);
 
 --
+-- Ketidakleluasaan untuk tabel `local_contests`
+--
+ALTER TABLE `local_contests`
+  ADD CONSTRAINT `local_contests_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`);
+
+--
 -- Ketidakleluasaan untuk tabel `test_cases`
 --
 ALTER TABLE `test_cases`
   ADD CONSTRAINT `test_cases_problem_id_foreign` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`);
+COMMIT;
+--
+-- Ketidakleluasaan untuk tabel `local_test_cases`
+--
+ALTER TABLE `local_test_cases`
+  ADD CONSTRAINT `local_test_cases_problem_id_foreign` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

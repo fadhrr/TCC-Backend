@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from models import Submission, User, TestCase, TestCaseResult, Language
+from models import LocalSubmission, User, LocalTestCase, LocalTestCaseResult, Language
 from pydantic import BaseModel
 from database import SessionLocal
 from sqlalchemy import desc
@@ -15,7 +15,7 @@ import httpx
 
 logger = logging.getLogger("uvicorn")
 router = APIRouter()
-class WriteSubmissionBase(BaseModel):
+class WriteLocalSubmissionBase(BaseModel):
     user_id : str
     problem_id : int
     language_id : int
@@ -52,22 +52,22 @@ def formatting_result(db_submissions_data, db):
         db_submission.status = formatting_status(db_submission.status)
     return db_submissions_data
 
-@router.get('/api/submissions', tags=["Submission"])
+@router.get('/api/local_submissions', tags=["Local Submission"])
 def read_all_submissions (db: Session = Depends(get_db)):
     
         
-    db_submissions_data = db.query(Submission).order_by(desc(Submission.created_at)).all()
+    db_submissions_data = db.query(LocalSubmission).order_by(desc(LocalSubmission.created_at)).all()
     value = formatting_result(db_submissions_data, db)
     
     db.close()
     return value
 
 
-@router.get('/api/submission/{submission_id}', tags=["Submission"])
+@router.get('/api/local_submission/{submission_id}', tags=["Local Submission"])
 def read_submission(submission_id:str,db: Session = Depends(get_db)):
     
     
-    db_submission_data = db.query(Submission).filter(Submission.id == submission_id).first()
+    db_submission_data = db.query(LocalSubmission).filter(LocalSubmission.id == submission_id).first()
     if db_submission_data is None:
         raise HTTPException(status_code=404, detail="submission data not found")
     db_submission_data.status = formatting_status(db_submission_data.status)
@@ -77,11 +77,11 @@ def read_submission(submission_id:str,db: Session = Depends(get_db)):
 
 
 
-@router.post('/api/submission', tags=["Submission"])
-def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(get_db)):
+@router.post('/api/local_submission', tags=["Local Submission"])
+def write_submission(new_submission : WriteLocalSubmissionBase,db: Session = Depends(get_db)):
     
     
-    db_new_submission = Submission(
+    db_new_submission = LocalSubmission(
         user_id = new_submission.user_id,
         problem_id = new_submission.problem_id,
         language_id = new_submission.language_id,
@@ -97,7 +97,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     # pass to FJudge
     
     # mendapatkan semua test case soal
-    db_test_cases = db.query(TestCase).filter(TestCase.problem_id == new_submission.problem_id).all()
+    db_test_cases = db.query(LocalTestCase).filter(LocalTestCase.problem_id == new_submission.problem_id).all()
     test_cases = []
     for test_case in db_test_cases:
         test_cases.append({
@@ -114,7 +114,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     }
     # logger.info("payloads\n")
     # logger.info(payloads)
-    url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
+    url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/local_judge"
     res = httpx.post(url, json=payloads)
     # logger.info(res.text)
     result = json.loads(res.text)
@@ -122,7 +122,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     # add test case results to database
     test_case_results = result["results"]
     for test_case_result in test_case_results:
-        db_test_case_result = TestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
+        db_test_case_result = LocalTestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
         db.add(db_test_case_result)
     
     # add submission result to database
@@ -141,11 +141,11 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     return {"message" : "submission created successfully"}
     
     
-@router.delete('/api/submission/{submission_id}', tags=["Submission"])
+@router.delete('/api/local_submission/{submission_id}', tags=["Local Submission"])
 def delete_submission(submission_id : str,db: Session = Depends(get_db)):
     
     
-    submission_data = db.query(Submission).filter(Submission.id == submission_id).first()
+    submission_data = db.query(LocalSubmission).filter(LocalSubmission.id == submission_id).first()
     if submission_data is None:
         raise HTTPException(status_code=404, detail="submission data not found")
     db.delete(submission_data)
@@ -154,39 +154,39 @@ def delete_submission(submission_id : str,db: Session = Depends(get_db)):
     db.close()
     return {"message" : "submission deleted successfully"}
     
-@router.get('/api/submissions/problem/{problem_id}', tags=["Submission"])
+@router.get('/api/local_submissions/problem/{problem_id}', tags=["Local Submission"])
 def read_submission_problems(problem_id :int,db: Session = Depends(get_db)):
     
     
-    db_submission = db.query(Submission).filter(Submission.problem_id == problem_id).all()
+    db_submission = db.query(LocalSubmission).filter(LocalSubmission.problem_id == problem_id).all()
     value = formatting_result(db_submission, db)
     db.close()
     return value
 
-@router.get('/api/submissions/user/{user_id}', tags=["Submission"])
+@router.get('/api/local_submissions/user/{user_id}', tags=["Local Submission"])
 def read_submission_problems(user_id :str,db: Session = Depends(get_db)):
     
     
-    db_submission = db.query(Submission).filter(Submission.user_id == user_id).all()
+    db_submission = db.query(LocalSubmission).filter(LocalSubmission.user_id == user_id).all()
     value = formatting_result(db_submission, db)
     db.close()
     return value
 
-@router.get('/api/submissions/user/{user_id}/problem/{problem_id}', tags=["Submission"])
+@router.get('/api/local_submissions/user/{user_id}/problem/{problem_id}', tags=["Local Submission"])
 def read_submission_problems(user_id :str, problem_id : int,db: Session = Depends(get_db)):
     
     
-    db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).all()
+    db_submission = db.query(LocalSubmission).filter(LocalSubmission.user_id == user_id, LocalSubmission.problem_id == problem_id).all()
     value = formatting_result(db_submission, db)
     db.close()
     return value
 
 
-@router.get('/api/users/{problem_id}/submissions/topbytime', tags=["Submission", "User"])
+@router.get('/api/users/{problem_id}/local_submissions/topbytime', tags=["Local Submission", "User"])
 def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
     
     
-    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.time).limit(5).all()
+    db_submissions = db.query(LocalSubmission).filter(LocalSubmission.status == "Accepted", LocalSubmission.problem_id == problem_id).order_by(LocalSubmission.time).limit(5).all()
     
     if not db_submissions:
         raise HTTPException(status_code=404, detail="No submissions found")
@@ -201,11 +201,11 @@ def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
     db.close()
     return top_users
 
-@router.get('/api/users/problem/{problem_id}/submissions/topbymemory', tags=["Submission", "User"])
+@router.get('/api/local_users/problem/{problem_id}/local_submissions/topbymemory', tags=["Local Submission", "User"])
 def get_top_users_by_memory(problem_id:int,db: Session = Depends(get_db)):
     
     
-    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.memory).limit(5).all()
+    db_submissions = db.query(LocalSubmission).filter(LocalSubmission.status == "Accepted", LocalSubmission.problem_id == problem_id).order_by(LocalSubmission.memory).limit(5).all()
     
     if not db_submissions:
         raise HTTPException(status_code=404, detail="No submissions found")
