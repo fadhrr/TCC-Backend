@@ -10,11 +10,9 @@ class WriteAdminBase(BaseModel):
     id : str
     user_id : str
     role : int | None = None
-
-@router.get('/api/admins', tags=["Admin"])
-def read_all_admins ():
-    db = SessionLocal()    
-    db_admins_data = db.query(Admin).all()
+    
+# menambahkan role di dalam user
+def formating_value(db_admins_data, db):
     value = []
     for admin in db_admins_data:
         role = "Assistant" if admin.role == 1 else "Admin"
@@ -27,6 +25,13 @@ def read_all_admins ():
             "nim" : user_data.nim,
             "role" : role 
         })
+    return value
+
+@router.get('/api/admins', tags=["Admin"])
+def read_all_admins ():
+    db = SessionLocal()    
+    db_admins_data = db.query(Admin).all()
+    value = formating_value(db_admins_data, db)
     return value
 
 @router.get('/api/admin/{admin_id}', tags=["Admin"])
@@ -62,42 +67,20 @@ def delete_admin(admin_id : str):
     return {"message" : "Admin deleted successfully"}
     
 @router.get("/api/role/assistants", tags=["User", "Admin", "Assistant"])
-def get_assistant():
+def get_only_assistant():
     db = SessionLocal()
     users = db.query(Admin).filter(Admin.role == 1).all()
     if users is None:
         raise HTTPException(status_code=404, detail="Assistant not found")
-    value = []
-    for admin in users:
-        role = "Assistant" if admin.role == 1 else "Admin"
-        user_data = db.query(User).filter(User.id == admin.user_id).first()
-        value.append({
-            "name" : user_data.name,
-            "id" : user_data.id,
-            "email" : user_data.email,
-            "score" : user_data.score,
-            "nim" : user_data.nim,
-            "role" : role 
-        })
-    return users
+    value = formating_value(users, db)
+    return value
 
 @router.get("/api/role/admins", tags=["User", "Admin", "Assistant"])
-def get_assistant():
+def get_only_admins():
     db = SessionLocal()
     users = db.query(Admin).filter(Admin.role == 2).all()
     if users is None:
         raise HTTPException(status_code=404, detail="Assistant not found")
     
-    value = []
-    for admin in users:
-        role = "Assistant" if admin.role == 1 else "Admin"
-        user_data = db.query(User).filter(User.id == admin.user_id).first()
-        value.append({
-            "name" : user_data.name,
-            "id" : user_data.id,
-            "email" : user_data.email,
-            "score" : user_data.score,
-            "nim" : user_data.nim,
-            "role" : role 
-        })
+    value = formating_value(users, db)
     return value

@@ -5,7 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
 from pydantic import BaseModel
 from database import SessionLocal
-from models import User
+from models import User, Admin
 from sqlalchemy.orm import Session
 
 
@@ -38,6 +38,32 @@ def read_all_users():
     db = SessionLocal()
     users = db.query(User).all()
     return users
+
+@router.get("/api/users/role", tags=["User"])
+def read_all_users_with_role():
+    db = SessionLocal()
+    users = db.query(User).all()
+
+    #
+    values = []
+    for user in users:
+        data_admin = db.query(Admin).filter(Admin.user_id == user.id).first()
+        role = ""
+        if data_admin :
+            if data_admin.role == 1 :
+                role = "Assistant"
+            elif data_admin.role == 2 :
+                role = "Admin"
+        values.append({
+            "id" : user.id,
+            "name" : user.name,
+            "nim" : user.nim,
+            "score" : user.score,
+            "email" : user.email,
+            "role" : role,
+            "created_at" : user.created_at
+        })
+    return values
 
 @router.get("/api/user/{user_id}", tags=["User"])
 def read_user(user_id : Annotated[str, Path(title="Id user yang ingin diambil")]):
