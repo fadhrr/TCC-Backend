@@ -49,3 +49,18 @@ def delete_admin(admin_id : str):
     
     return {"message" : "Admin deleted successfully"}
     
+@router.get("/api/role/assistants", tags=["User", "Admin", "Assistant"])
+def get_assistant():
+    db = SessionLocal()
+    user = db.query(Admin).filter(Admin.role == 1).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="Assistant not found")
+    return user
+
+@router.get("/api/role/admins", tags=["User", "Admin", "Assistant"])
+def get_assistant():
+    db = SessionLocal()
+    user = db.query(Admin).filter(Admin.role == 2).first()
+    if user is None:
+        raise HTTPException(status_code=404, detail="Assistant not found")
+    return user

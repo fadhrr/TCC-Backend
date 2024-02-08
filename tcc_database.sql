@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `admins` (
   `id` varchar(40) NOT NULL,
   `user_id` varchar(40) NOT NULL,
-  `role` varchar(255) NOT NULL,
+  `role` int(2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -40,8 +40,10 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `user_id`, `role`, `created_at`, `updated_at`) VALUES
-('1', '1', 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-('2', '2', 'admin', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('1', '1', 2, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('2', '2', 2, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('3', '3', 1, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('4', '4', 1, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -132,6 +134,7 @@ INSERT INTO `languages` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (1, 'Java', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 (2, 'C++', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 (3, 'C', '2024-01-26 10:28:42', '2024-01-26 10:28:42');
+(3, 'Python', '2024-01-26 10:28:42', '2024-01-26 10:28:42');
 
 -- --------------------------------------------------------
 
@@ -315,9 +318,9 @@ INSERT INTO `test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `
 CREATE TABLE `test_case_results` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `submission_id` bigint(20) UNSIGNED NOT NULL,
-  `status` varchar(255) NOT NULL,
-  `time` int(11) NOT NULL,
-  `memory` int(11) NOT NULL,
+  `status` varchar(255) NULL DEFAULT NULL,
+  `time` int(11) NULL DEFAULT NULL,
+  `memory` int(11) NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -375,6 +378,7 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 ('1', 'Admin User', 'A12345', 150, 'admin@example.com', NULL, NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 ('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('4', 'Fajry', '2108107010059', 0, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
 -- Indexes for dumped tables

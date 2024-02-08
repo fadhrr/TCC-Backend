@@ -4,3 +4,4 @@ uvicorn[standard]
 SQLAlchemy==2.0.25
 sqlmodel==0.0.14
 requests==2.31.0
+httpx==0.26.0

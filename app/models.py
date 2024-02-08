@@ -89,9 +89,9 @@ class TestCaseResult(Base):
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     submission_id = Column(Integer, ForeignKey("submissions.id"))
-    status = Column(String)
-    time = Column(Integer)
-    memory = Column(Integer)
+    status = Column(String, default=None)
+    time = Column(Integer, default=None)
+    memory = Column(Integer, default=None)
     created_at = Column(DateTime, default=datetime.utcnow)
     
 

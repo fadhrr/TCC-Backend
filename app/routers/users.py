@@ -40,7 +40,7 @@ def read_all_users():
     return users
 
 @router.get("/api/user/{user_id}", tags=["User"])
-def read_user(user_id : Annotated[int, Path(title="Id user yang ingin diambil")]):
+def read_user(user_id : Annotated[str, Path(title="Id user yang ingin diambil")]):
     db = SessionLocal();
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
@@ -60,7 +60,7 @@ def write_user(user: WriteUserBase):
     })
 
 @router.put("/api/user/{user_id}", tags=["User"])
-async def update_user(user_id: int, user_data: UpdateUserBase, db: Session = Depends(get_db)):
+async def update_user(user_id: str, user_data: UpdateUserBase, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
@@ -85,7 +85,7 @@ async def update_user(user_id: int, user_data: UpdateUserBase, db: Session = Dep
     return {"message": "User updated successfully"}
 
 @router.delete("/api/user/{user_id}", tags=["User"])
-def delete_user(user_id: Annotated[int, Path(title="Id user yang ingin di delete")]):
+def delete_user(user_id: Annotated[str, Path(title="Id user yang ingin di delete")]):
     db = SessionLocal()
     user = db.query(User).filter(User.id==user_id).first()
     if user is None :
