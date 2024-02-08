@@ -264,8 +264,8 @@ CREATE TABLE `submissions` (
   `user_id` varchar(40) NOT NULL,
   `problem_id` bigint(20) UNSIGNED NOT NULL,
   `language_id` bigint(20) UNSIGNED NOT NULL,
-  `status` varchar(255) NULL DEFAULT NULL,
-  `time` int(11) NOT NULL,
+  `status` varchar(3) NULL DEFAULT NULL,
+  `time` float(5,3) NOT NULL,
   `memory` int(11) NOT NULL,
   `code` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -277,9 +277,9 @@ CREATE TABLE `submissions` (
 --
 
 INSERT INTO `submissions` (`id`, `user_id`, `problem_id`, `language_id`, `status`, `time`, `memory`, `code`, `created_at`, `updated_at`) VALUES
-(1, '1', 1, 1, 'Accepted', 10, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(2, '2', 3, 2, 'Wrong Answer', 15, 512, '#include <stdio.h>\\nint main() { printf(\"Wrong Answer\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(3, '1', 6, 3, 'Compile Error', 5, 128, 'def print_message():\\n    print(\"Compile Error\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+(1, '1', 1, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 3, 2, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 6, 3, 'CTE', 0.15, 128, 'def print_message():\\n    print(\"CE\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 -- --------------------------------------------------------
 
@@ -318,8 +318,8 @@ INSERT INTO `test_cases` (`id`, `problem_id`, `input`, `output`, `created_at`, `
 CREATE TABLE `test_case_results` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `submission_id` bigint(20) UNSIGNED NOT NULL,
-  `status` varchar(255) NULL DEFAULT NULL,
-  `time` int(11) NULL DEFAULT NULL,
+  `status` varchar(3) NULL DEFAULT NULL,
+  `time` float(5,3) NULL DEFAULT NULL,
   `memory` int(11) NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -329,12 +329,12 @@ CREATE TABLE `test_case_results` (
 --
 
 INSERT INTO `test_case_results` (`id`, `submission_id`, `status`, `time`, `memory`, `created_at`) VALUES
-(1, 1, 'Accepted', 10, 256, '2024-01-26 10:28:43'),
-(2, 1, 'Wrong Answer', 15, 512, '2024-01-26 10:28:43'),
-(3, 1, 'Compile Error', 15, 128, '2024-01-26 10:28:43'),
-(4, 2, 'Accepted', 15, 512, '2024-01-26 10:28:43'),
-(5, 2, 'Wrong Answer', 15, 512, '2024-01-26 10:28:43'),
-(6, 3, 'Compile Error', 5, 128, '2024-01-26 10:28:43');
+(1, 1, 'AC', 0.10, 256, '2024-01-26 10:28:43'),
+(2, 1, 'WA', 0.15, 512, '2024-01-26 10:28:43'),
+(3, 1, 'CTE', 0.15, 128, '2024-01-26 10:28:43'),
+(4, 2, 'AC', 0.15, 512, '2024-01-26 10:28:43'),
+(5, 2, 'WA', 0.15, 512, '2024-01-26 10:28:43'),
+(6, 3, 'CTE', 0.5, 128, '2024-01-26 10:28:43');
 
 
 --

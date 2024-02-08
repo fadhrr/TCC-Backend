@@ -1,6 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timedelta
 from database import Base
 
 
@@ -14,8 +14,8 @@ class User(Base):
     email= Column(String, unique=True, index=True)
     email_verified_at = Column(DateTime, default=None)
     remember_token = Column(String, default=None)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
 
 
 class Problem(Base):
@@ -33,8 +33,8 @@ class Problem(Base):
     sample_output = Column(String)
     constraints = Column(String)
     explanation = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     categories = relationship("Category", secondary="problem_categories", back_populates="problems")
 
 class Category(Base):
@@ -57,7 +57,7 @@ class Language(Base):
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
 
 
 class Submission(Base):
@@ -68,10 +68,10 @@ class Submission(Base):
     problem_id = Column(Integer, ForeignKey("problems.id"))
     language_id = Column(Integer, ForeignKey("languages.id"))
     status = Column(String, default=None)
-    time = Column(Integer)
+    time = Column(Float)
     memory = Column(Integer)
     code = Column(String, default="")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     
 
 class TestCase(Base):
@@ -81,8 +81,8 @@ class TestCase(Base):
     problem_id = Column(Integer, ForeignKey("problems.id"))
     input = Column(String)
     output = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
 
 class TestCaseResult(Base):
     __tablename__ = "test_case_results"
@@ -90,9 +90,9 @@ class TestCaseResult(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     submission_id = Column(Integer, ForeignKey("submissions.id"))
     status = Column(String, default=None)
-    time = Column(Integer, default=None)
+    time = Column(Float, default=None)
     memory = Column(Integer, default=None)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     
 
 class Admin(Base):
@@ -101,8 +101,8 @@ class Admin(Base):
     id =  Column(String(255), primary_key=True)
     user_id = Column(String(255), ForeignKey("users.id"))
     role = Column(Integer)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
 
 
 
@@ -117,7 +117,7 @@ class Contest(Base):
     description = Column(String)
     start_time = Column(DateTime)
     end_time = Column(DateTime)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     
 class ContestParticipant(Base):
     __tablename__ = "contest_participants"

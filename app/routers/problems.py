@@ -5,8 +5,17 @@ from pydantic import BaseModel
 from database import SessionLocal
 from models import Problem, ProblemCategory, Category
 from sqlalchemy.orm import Session, joinedload
-
+from sqlalchemy.orm import Session
+from fastapi import Depends
+ 
 router = APIRouter()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+    
 
 class WriteProblemBase(BaseModel):
     title : str
@@ -34,34 +43,39 @@ class UpdatedProblemBase(BaseModel):
     explanation : str | None = None
 
 @router.get('/api/problems', tags=["Problem"])
-def read_problems():
-    db = SessionLocal()
+def read_problems(db: Session = Depends(get_db)):
+    
+    
     db_problems = db.query(Problem).options(joinedload(Problem.categories)).all()
     return db_problems
     
 @router.get("/api/problems/search", tags=["Problem"])
-def search_problem(q : str | None = None):
-    db = SessionLocal()
+def search_problem(q : str | None = None,db: Session = Depends(get_db)):
+    
+    
     items = db.query(Problem).filter(Problem.title.contains(q)).all()
     return items
 
 @router.get('/api/problem/{problem_id}', tags=["Problem"])
-def read_problem(problem_id : int):
-    db = SessionLocal()
+def read_problem(problem_id : int,db: Session = Depends(get_db)):
+    
+    
     db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem_id).first()
     return db_problem
 
 # get router based on category
 @router.get('/api/problems/{category_id}', tags=["Problem", "Category"])
-def read_problem_category(category_id : int):
-    db = SessionLocal()
+def read_problem_category(category_id : int,db: Session = Depends(get_db)):
+    
+    
     db_problem = db.query(Problem).join(ProblemCategory).filter(ProblemCategory.category_id == category_id).all()
     return db_problem
 
 
 @router.post('/api/problem', tags=["Problem"])
-def create_problem(new_problem : WriteProblemBase):
-    db = SessionLocal()
+def create_problem(new_problem : WriteProblemBase,db: Session = Depends(get_db)):
+    
+    
     problem = Problem(
         title = new_problem.title,
         description = new_problem.description,
@@ -82,8 +96,9 @@ def create_problem(new_problem : WriteProblemBase):
     return {"message": "Problems created successfully"}
 
 @router.put('/api/problem/{problem_id}', tags=["Problem"])
-def update_problem(problem_id : int, new_problem : UpdatedProblemBase):
-    db = SessionLocal()
+def update_problem(problem_id : int, new_problem : UpdatedProblemBase,db: Session = Depends(get_db)):
+    
+    
     old_problem = db.query(Problem).filter(Problem.id == problem_id).first()
     
     if not old_problem :
@@ -125,8 +140,9 @@ def update_problem(problem_id : int, new_problem : UpdatedProblemBase):
     return { "message" : "Problem updated successfully"}
 
 @router.delete('/api/problems/{problem_id}', tags=["Problem"])
-def function(problem_id : int):
-    db = SessionLocal()
+def function(problem_id : int,db: Session = Depends(get_db)):
+    
+    
     problem = db.query(Problem).filter(Problem.id==problem_id).first()
     if problem is None :
         raise HTTPException(status_code=404, detail="Problem was not found")
@@ -137,7 +153,8 @@ def function(problem_id : int):
     
 # @router.get('/api/problems/categories/{category_name}', tags=["problems", "categories"])
 # def read_problem_categories(category_name : str):
-#     db = SessionLocal()
+#     
+    
 #     category = db.query(Category).filter(Category.name == category_name).first()
 #     if category_id is None :
 #         raise HTTPException(status_code=404, detail="Category not found")

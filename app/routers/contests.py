@@ -3,7 +3,18 @@ from database import SessionLocal
 from models import Contest 
 from pydantic import BaseModel
 from datetime import datetime
+from sqlalchemy.orm import Session
+from fastapi import Depends
+ 
+
 router = APIRouter()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+    
 
 class WriteContestBase(BaseModel):
     admin_id : str
@@ -22,15 +33,14 @@ class UpdateContestBase(BaseModel):
 
 
 @router.get('/api/contests', tags=["Contest"])
-def read_all_contests():
-    db = SessionLocal()
+def read_all_contests(db: Session = Depends(get_db)):
+    
+    
     db_contests = db.query(Contest).all()
     return db_contests
 
 @router.get('/api/contest/{contest_id}', tags=["Contest"])
-def read_contest(contest_id:int):
-    db = SessionLocal()
-    
+def read_contest(contest_id:int,db: Session = Depends(get_db)):
     
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     if db_contest is None:
@@ -38,8 +48,9 @@ def read_contest(contest_id:int):
     return db_contest
     
 @router.post('/api/contest', tags=["Contest"])
-def write_contest(new_contest : WriteContestBase):
-    db = SessionLocal()
+def write_contest(new_contest : WriteContestBase,db: Session = Depends(get_db)):
+    
+    
     new_db_contest = Contest(
         admin_id = new_contest.admin_id,
         title = new_contest.title,
@@ -54,8 +65,9 @@ def write_contest(new_contest : WriteContestBase):
     return {"message" : "Contest created successfully"}
 
 @router.put('/api/contest/{contest_id}', tags=["Contest"])
-def update_contest(contest_id : int, updated_contest : UpdateContestBase):
-    db = SessionLocal()
+def update_contest(contest_id : int, updated_contest : UpdateContestBase,db: Session = Depends(get_db)):
+    
+    
     new_updated_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     if new_updated_contest is None :
         raise HTTPException(status_code = 404, detail="Contest Not Found")
@@ -82,8 +94,9 @@ def update_contest(contest_id : int, updated_contest : UpdateContestBase):
     return {"message" : "Contest updated succesfully"}
 
 @router. delete('/api/contest/{contest_id}', tags=["Contest"])
-def delete_contest(contest_id : int):
-    db = SessionLocal()
+def delete_contest(contest_id : int,db: Session = Depends(get_db)):
+    
+    
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     db.delete(db_contest)
     db.commit()

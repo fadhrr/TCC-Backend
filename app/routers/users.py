@@ -34,17 +34,17 @@ def get_db():
 
 
 @router.get("/api/users", tags=["User"])
-def read_all_users():
-    db = SessionLocal()
+def read_all_users(db: Session = Depends(get_db)):
+    
     users = db.query(User).all()
     return users
 
 @router.get("/api/users/role", tags=["User"])
-def read_all_users_with_role():
-    db = SessionLocal()
+def read_all_users_with_role(db: Session = Depends(get_db)):
+    
     users = db.query(User).all()
 
-    #
+    # get role from admin
     values = []
     for user in users:
         data_admin = db.query(Admin).filter(Admin.user_id == user.id).first()
@@ -66,16 +66,16 @@ def read_all_users_with_role():
     return values
 
 @router.get("/api/user/{user_id}", tags=["User"])
-def read_user(user_id : Annotated[str, Path(title="Id user yang ingin diambil")]):
-    db = SessionLocal();
+def read_user(user_id : Annotated[str, Path(title="Id user yang ingin diambil")],db: Session = Depends(get_db)):
+    
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
 @router.post("/api/user", tags=["User"])
-def write_user(user: WriteUserBase):
-    db = SessionLocal()
+def write_user(user: WriteUserBase, db: Session = Depends(get_db)):
+    
     user = User(id = user.id, name=user.name, nim=user.nim, score=0, email=user.email)
     db.add(user)
     db.commit()
@@ -111,8 +111,8 @@ async def update_user(user_id: str, user_data: UpdateUserBase, db: Session = Dep
     return {"message": "User updated successfully"}
 
 @router.delete("/api/user/{user_id}", tags=["User"])
-def delete_user(user_id: Annotated[str, Path(title="Id user yang ingin di delete")]):
-    db = SessionLocal()
+def delete_user(user_id: Annotated[str, Path(title="Id user yang ingin di delete")], db: Session = Depends(get_db)):
+    
     user = db.query(User).filter(User.id==user_id).first()
     if user is None :
         raise HTTPException(status_code=404, detail="User was not found")
@@ -122,7 +122,7 @@ def delete_user(user_id: Annotated[str, Path(title="Id user yang ingin di delete
     return {"message" : "User deleted successfully"}
    
 @router.get("/api/leaderboard", tags=["User"])
-def get_leaderboard():
-    db = SessionLocal()
+def get_leaderboard(db: Session = Depends(get_db)):
+    
     user = db.query(User).order_by(desc(User.score)).all()
     return user
