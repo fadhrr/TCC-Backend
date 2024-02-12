@@ -49,15 +49,31 @@ def formatting_status(result):
     
 # format result untuk bisa dibaca oleh user
 def formatting_result(db_submissions_data, db):
+    value = []
     for db_submission in db_submissions_data:
         db_submission.status = formatting_status(db_submission.status)
-    return db_submissions_data
+        user_data = db.query(User).filter(User.id == db_submission.user_id).first()
+
+        value.append({
+            "id": db_submission.id,
+            "language_id": db_submission.language_id,
+            "time": db_submission.time,
+            "code": db_submission.code,
+            "status": db_submission.status,
+            "user_id": db_submission.user_id,
+            "user": user_data,
+            "problem_id": db_submission.problem_id,
+            "memory": db_submission.memory,
+            "created_at": db_submission.created_at
+        })
+    return value
 
 @router.get('/api/submissions', tags=["Submission"])
 def read_all_submissions (db: Session = Depends(get_db)):
     
         
-    db_submissions_data = db.query(Submission).order_by(desc(Submission.created_at)).all()
+    db_submissions_data = db.query(Submission).order_by(Submission.created_at.desc()).all()
+
     value = formatting_result(db_submissions_data, db)
     
     db.close()
@@ -72,7 +88,7 @@ def read_submission(submission_id:str,db: Session = Depends(get_db)):
     if db_submission_data is None:
         raise HTTPException(status_code=404, detail="submission data not found")
     db_submission_data.status = formatting_status(db_submission_data.status)
-    db.close()
+    
     return db_submission_data
 
 
@@ -187,7 +203,7 @@ def read_submission_problems(user_id :str, problem_id : int,db: Session = Depend
     return value
 
 
-@router.get('/api/users/{problem_id}/submissions/topbytime', tags=["Submission", "User"])
+@router.get('/api/users/problem/{problem_id}/submissions/topbytime', tags=["Submission", "User"])
 def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
     
     
@@ -202,8 +218,7 @@ def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
         user = db.query(User).filter(User.id == user_id).first()
         time = submission.time
         top_users.append({"name": user.name, "time": time})
-    
-    db.close()
+
     return top_users
 
 @router.get('/api/users/problem/{problem_id}/submissions/topbymemory', tags=["Submission", "User"])
@@ -222,7 +237,7 @@ def get_top_users_by_memory(problem_id:int,db: Session = Depends(get_db)):
         memory = submission.memory
         top_users.append({"name": user.name, "memory": memory})
     
-    db.close()
+    
     return top_users
 
 
