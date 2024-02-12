@@ -67,9 +67,32 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `created_at`, `updated_at`) VALU
 (1, 'Array', 'array', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (2, 'Sorting', 'sorting', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (3, 'Dynamic Programming', 'dynamic-programming', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(4, 'Graph Theory', 'graph-theory', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(5, 'String', 'string', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
-
+(4, 'Graph', 'graph', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(5, 'String', 'string', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(6, 'Backtracking', 'backtracking', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(7, 'Greedy ', 'greedy-', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(8, 'Tree', 'tree', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(9, 'Divide and Conquer', 'divide-and-conquer', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(10, 'Bit Manipulation', 'bit-manipulation', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(11, 'Geometry', 'geometry', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(12, 'Number Theory', 'number-theory', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(13, 'Searching', 'searching', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(14, 'Binary Search', 'binary-search', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(15, 'Hashing', 'hashing', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(16, 'Stack', 'stack', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(17, 'Queue', 'queue', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(18, 'Linked List', 'linked-list', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(19, 'Segment Tree', 'segment-tree', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(20, 'Fenwick Tree (Binary Indexed Tree)', 'fenwick-tree', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(21, 'Disjoint Set Union', 'disjoint-set-union', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(22, 'Trie', 'trie', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(23, 'Heap/Priority Queue', 'heap-priority-queue', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(24, 'Game Theory', 'game-theory', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(25, 'Network Flow', 'network-flow', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(26, 'String Algorithms', 'string-algorithms', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(27, 'Computational Geometry', 'computational-geometry', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(28, 'Persistent Data Structures', 'persistent-data-structures', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(29, 'Math', 'math', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 -- --------------------------------------------------------
 
 --
@@ -307,10 +330,30 @@ CREATE TABLE `problem_categories` (
 --
 
 INSERT INTO `problem_categories` (`id`, `problem_id`, `category_id`) VALUES
-(1, 2, 3),
-(2, 1, 4),
-(3, 2, 1),
-(4, 3, 3);
+(1, 1, 5), -- Soal 1 - String
+(2, 2, 29), -- Soal 2 - Math
+(3, 3, 29), -- Soal 3 - String
+(4, 3, 5), -- Soal 3 - Arithmetic
+(5, 4, 11), -- Soal 4 - Geometry
+(6, 5, 1), -- Soal 5 - Array
+(7, 6, 16), -- Soal 6 - Pattern
+(8, 7, 32), -- Soal 7 - Recursion
+(9, 8, 64), -- Soal 8 - Prime Numbers
+(10, 9, 2), -- Soal 9 - Sorting
+(11, 10, 3), -- Soal 10 - Dynamic Programming
+(15, 11, 16), -- Soal 11 - Conditional Statements
+(16, 12, 5), -- Soal 12 - String
+(17, 13, 1), -- Soal 13 - Array
+(18, 14, 5), -- Soal 14 - String
+(19, 5, 29), -- Soal 14 - Conditional Statements
+(20, 6, 16), -- Soal 14 - Pattern
+(21, 9, 2), -- Soal 14 - Sorting
+(22, 12, 5), -- Soal 14 - String
+(23, 13, 1), -- Soal 14 - Array
+(24, 14, 5); -- Soal 14 - String
+
+
+
 
 --
 -- Struktur dari tabel `local_problem_categories`
