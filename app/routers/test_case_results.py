@@ -18,6 +18,33 @@ def get_db():
         yield db
     finally:
         db.close()
+        
+def formatting_status(result):
+    if result == "AC":
+        return "Accepted"
+    elif result == "WA" :
+        return "Wrong Answer"
+    elif result == "RTE" :
+        return "Runtime Error"
+    elif result == "TLE" :
+        return "Time Limit Exceeded"
+    elif result == "CTE":
+        return "Compile Time Error"
+    else:
+        return result
+    
+# format result untuk bisa dibaca oleh user
+def formatting_result(db_datas):
+    for db_data in db_datas:
+        db_data.status = formatting_status(db_data.status)
+    return db_datas
+
+# format satu result untuk bisa dibaca oleh user
+# def formatting_result(db_datas):
+#     for db_data in db_datas:
+#         db_data.status = formatting_status(db_data.status)
+#     return db_datas
+
     
 
 @router.get('/api/test_case_results', tags=["Test Case Results"])
@@ -25,6 +52,7 @@ def read_all_test_case_results(db: Session = Depends(get_db)):
     
     
     db_test_case_results = db.query(TestCaseResult).all()
+    db_test_case_results = formatting_result(db_test_case_results)
     return db_test_case_results
 
 @router.get('/api/test_case_result/{test_case_result_id}', tags=["Test Case Results"])
@@ -32,6 +60,7 @@ def read_test_case_result(test_case_result_id : int,db: Session = Depends(get_db
     
     
     db_test_case_result = db.query(TestCaseResult).filter(TestCaseResult.id == test_case_result_id).first()
+    db_test_case_result = formatting_status(db_test_case_result.status)
     return db_test_case_result
 
 @router.get("/api/get/test_case_result/{submission_id}", tags=["Test Case Results"])
@@ -39,6 +68,7 @@ def get_test_case_result(submission_id : int,db: Session = Depends(get_db)):
     
     
     db_test_case_result = db.query(TestCaseResult).filter(TestCaseResult.submission_id == submission_id).all()
+    db_test_case_result = formatting_result(db_test_case_result)
     return db_test_case_result
 
 @router.get('/api/test_case_result/submission/{submission_id}', tags=["Test Case Results", "Submission"])
@@ -46,6 +76,7 @@ def read_test_case_result_submission(submission_id : str,db: Session = Depends(g
     
     
     db_test_case_result = db.query(TestCaseResult).filter(TestCaseResult.submission_id == submission_id).all()
+    db_test_case_result = formatting_result(db_test_case_result)
     return db_test_case_result
 
 @router.post("/api/test_case_result", tags=["Test Case Results"])
