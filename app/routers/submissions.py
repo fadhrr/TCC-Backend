@@ -179,7 +179,7 @@ def delete_submission(submission_id : str,db: Session = Depends(get_db)):
 def read_submission_problems(problem_id :int,db: Session = Depends(get_db)):
     
     
-    db_submission = db.query(Submission).filter(Submission.problem_id == problem_id).all()
+    db_submission = db.query(Submission).filter(Submission.problem_id == problem_id).order_by(Submission.created_at.desc()).all()
     value = formatting_result(db_submission, db)
     db.close()
     return value
@@ -197,7 +197,7 @@ def read_submission_problems(user_id :str,db: Session = Depends(get_db)):
 def read_submission_problems(user_id :str, problem_id : int,db: Session = Depends(get_db)):
     
     
-    db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).all()
+    db_submission = db.query(Submission).filter(Submission.user_id == user_id, Submission.problem_id == problem_id).order_by(Submission.created_at.desc()).all()
     value = formatting_result(db_submission, db)
     db.close()
     return value
