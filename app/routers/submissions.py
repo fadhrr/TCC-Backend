@@ -186,9 +186,9 @@ def read_submission_problems(user_id :str, problem_id : int,db: Session = Depend
 def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
     
     
-    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.time).limit(5).all()
+    db_submissions = db.query(Submission).filter(Submission.status == "AC", Submission.problem_id == problem_id).order_by(Submission.time).limit(5).all()
     
-    if not db_submissions:
+    if db_submissions is None:
         raise HTTPException(status_code=404, detail="No submissions found")
     
     top_users = []
@@ -205,9 +205,9 @@ def get_top_users_by_time(problem_id:int,db: Session = Depends(get_db)):
 def get_top_users_by_memory(problem_id:int,db: Session = Depends(get_db)):
     
     
-    db_submissions = db.query(Submission).filter(Submission.status == "Accepted", Submission.problem_id == problem_id).order_by(Submission.memory).limit(5).all()
+    db_submissions = db.query(Submission).filter(Submission.status == "AC", Submission.problem_id == problem_id).order_by(Submission.memory).limit(5).all()
     
-    if not db_submissions:
+    if db_submissions is None:
         raise HTTPException(status_code=404, detail="No submissions found")
     
     top_users = []
