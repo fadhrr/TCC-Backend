@@ -108,7 +108,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     
 
     payloads = {
-        "identifier" : str(db_new_submission.id),
+        "identifier" : db_new_submission.id,
         "source_code" : db_new_submission.code,
         "language_id" : db_new_submission.language_id,
         "test_cases" : test_cases
