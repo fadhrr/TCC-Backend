@@ -53,10 +53,11 @@ def formatting_result(db_submissions_data, db):
     for db_submission in db_submissions_data:
         db_submission.status = formatting_status(db_submission.status)
         user_data = db.query(User).filter(User.id == db_submission.user_id).first()
+        language_data = db.query(Language).filter(Language.id == db_submission.language_id).first()
 
         value.append({
             "id": db_submission.id,
-            "language_id": db_submission.language_id,
+            "language": language_data.name,
             "time": db_submission.time,
             "code": db_submission.code,
             "status": db_submission.status,
