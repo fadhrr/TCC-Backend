@@ -688,6 +688,20 @@ ALTER TABLE `local_submissions`
 ALTER TABLE `test_cases`
   ADD PRIMARY KEY (`id`),
   ADD KEY `test_cases_problem_id_foreign` (`problem_id`);
+
+
+-- Indeks untuk tabel `test_case_results`
+--
+ALTER TABLE `test_case_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `test_cases__results_submission_id_foreign` (`submission_id`);
+--
+
+-- Indeks untuk tabel `local_test_case_results`
+--
+ALTER TABLE `local_test_case_results`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `local_test_cases__results_submission_id_foreign` (`submission_id`);
 --
 -- Indeks untuk tabel `local_test_cases`
 --
@@ -783,7 +797,7 @@ ALTER TABLE `local_submissions`
 ALTER TABLE `test_cases`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
--- AUTO_INCREMENT untuk tabel `test_case`_results
+-- AUTO_INCREMENT untuk tabel `test_case_results`
 --
 ALTER TABLE `test_case_results`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
@@ -793,6 +807,11 @@ ALTER TABLE `test_case_results`
 ALTER TABLE `local_test_cases`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
+-- AUTO_INCREMENT untuk tabel `local_test_case_results`
+--
+ALTER TABLE `local_test_case_results`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
