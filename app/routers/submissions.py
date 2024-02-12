@@ -12,6 +12,7 @@ from fastapi import Depends
 from dotenv import load_dotenv
 import os
 import httpx
+load_dotenv()
 
 logger = logging.getLogger("uvicorn")
 router = APIRouter()

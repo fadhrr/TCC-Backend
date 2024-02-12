@@ -17,6 +17,10 @@ def get_db():
     finally:
         db.close()
     
+@router.get('/api/languages', tags=["Language"])
+def read_all_languages(db : Session = Depends(get_db)):
+    db_lg = db.query(Language).all()
+    return db_lg
 
 @router.post('/api/language', tags={"Language"})
 def write_language(new_lg : WriteLanguageBase,db: Session = Depends(get_db)):
