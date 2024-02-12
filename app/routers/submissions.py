@@ -118,7 +118,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
     res = httpx.post(url, json=payloads)
     # logger.info(res.text)
-    return res.text
+    # return res.text
     if res is not None:
         
         result = json.loads(res.text)
