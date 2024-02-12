@@ -541,6 +541,7 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 ('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('4', 'Fajry', '2108107010059', 0, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('jNziwj73vyUOunOsT87LvCeqlDr2', 'alfnsnff', '2108107010047', 0, 'alfnsnff@gmail.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
 -- Struktur dari tabel `contest_problems`
