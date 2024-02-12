@@ -1,0 +1,31 @@
+version: '1.0'
+
+services:
+  fast_api_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tcc-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - TZ=Asia/Jakarta
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: tcc_database
+    volumes:
+      - ./tcc_database.sql:/docker-entrypoint-initdb.d/tcc_database.sql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: 
