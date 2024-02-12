@@ -118,28 +118,32 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
     res = httpx.post(url, json=payloads)
     # logger.info(res.text)
-    result = json.loads(res.text)
+    return res.text
+    if res is not None:
+        
+        result = json.loads(res.text)
+        
+        # add test case results to database
+        test_case_results = result["results"]
+        for test_case_result in test_case_results:
+            db_test_case_result = TestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
+            db.add(db_test_case_result)
+        
+        # add submission result to database
+        
+        db_new_submission.status = result["verdict"]
+        db_new_submission.time = result["avg_time"]
+        # db_new_submission.memory = result["avg_memory"]   
+        db.add(db_new_submission)
+        db.commit()
+        db.refresh(db_new_submission)
     
-    # add test case results to database
-    test_case_results = result["results"]
-    for test_case_result in test_case_results:
-        db_test_case_result = TestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
-        db.add(db_test_case_result)
+        
+        db.close()
+        # return result
     
-    # add submission result to database
-    
-    db_new_submission.status = result["verdict"]
-    db_new_submission.time = result["avg_time"]
-    # db_new_submission.memory = result["avg_memory"]   
-    db.add(db_new_submission)
-    db.commit()
-    db.refresh(db_new_submission)
-   
-    
-    db.close()
-    # return result
- 
-    return {"message" : "submission created successfully"}
+        return {"message" : "submission created successfully"}
+    return {"message" : "Error in submission"}
     
     
 @router.delete('/api/submission/{submission_id}', tags=["Submission"])
