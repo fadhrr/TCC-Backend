@@ -783,6 +783,11 @@ ALTER TABLE `local_submissions`
 ALTER TABLE `test_cases`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
+-- AUTO_INCREMENT untuk tabel `test_case`_results
+--
+ALTER TABLE `test_case_results`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
 -- AUTO_INCREMENT untuk tabel `local_test_cases`
 --
 ALTER TABLE `local_test_cases`
