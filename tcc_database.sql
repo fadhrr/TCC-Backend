@@ -116,9 +116,9 @@ CREATE TABLE `contests` (
 --
 
 INSERT INTO `contests` (`id`, `admin_id`, `title`, `slug`, `description`, `start_time`, `end_time`, `created_at`, `updated_at`) VALUES
-(1, '1', 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:28:43', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(2, '2', 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-02-05 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-(3, '1', 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-02-15 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+(1, '1', 'Contest Pertama', 'contest-pertama', 'Deskripsi contest pertama.', '2024-01-26 10:00:00', '2024-02-02 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2, '2', 'Contest Kedua', 'contest-kedua', 'Deskripsi contest kedua.', '2024-01-26 10:28:43', '2024-02-12 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3, '1', 'Contest Ketiga', 'contest-ketiga', 'Deskripsi contest ketiga.', '2024-01-26 10:28:43', '2024-02-22 10:28:43', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 --
 -- Struktur dari tabel `local_contests`
 --
@@ -355,7 +355,6 @@ INSERT INTO `problem_categories` (`id`, `problem_id`, `category_id`) VALUES
 
 
 
---
 -- Struktur dari tabel `local_problem_categories`
 --
 
@@ -367,6 +366,7 @@ CREATE TABLE `local_problem_categories` (
 
 --
 -- Dumping data untuk tabel `local_problem_categories`
+--
 --
 
 INSERT INTO `local_problem_categories` (`id`, `problem_id`, `category_id`) VALUES
@@ -402,6 +402,54 @@ INSERT INTO `submissions` (`id`, `user_id`, `problem_id`, `language_id`, `status
 (1, '1', 1, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (2, '2', 3, 2, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 (3, '1', 6, 3, 'CTE', 0.15, 128, 'def print_message():\\n    print(\"CE\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+
+
+--
+-- Struktur dari tabel `contest_submissions`
+--
+
+CREATE TABLE `contest_submissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` varchar(40) NOT NULL,
+  `contest_id` bigint(20) UNSIGNED NOT NULL,
+  `problem_id` bigint(20) UNSIGNED NOT NULL,
+  `language_id` bigint(20) UNSIGNED NOT NULL,
+  `status` varchar(3) NULL DEFAULT NULL,
+  `time` float(5,3) NOT NULL,
+  `memory` int(11) NOT NULL,
+  `code` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data untuk tabel `contest_submissions`
+--
+
+INSERT INTO `contest_submissions` (`id`, `user_id`, `contest_id`, `problem_id`, `language_id`, `status`, `time`, `memory`, `code`, `created_at`, `updated_at`) VALUES
+(1,'1', 1 , 1, 1, 'WA', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(2,'2', 1 , 4, 1, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(3,'1', 1 , 1, 3, 'CTE', 0.15, 128, 'def print_message():\\n    print(\"CE\")', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(4,'1', 1 , 1, 1, 'WA', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(5,'1', 1 , 1, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(6,'1', 1 , 2, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(7,'1', 1 , 3, 1, 'RTE', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(8,'1', 1 , 4, 1, 'WA', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(9,'2', 1 , 2, 1, 'RTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(10,'2', 1 , 3, 1, 'AC', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(11,'3', 1 , 1, 1, 'AC', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(12,'3', 1 , 2, 1, 'AC', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(13,'3', 1 , 3, 1, 'WA', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(14,'3', 1 , 3, 1, 'RTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(15,'3', 1 , 3, 1, 'CTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(16,'3', 1 , 4, 1, 'RTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(17,'3', 1 , 4, 1, 'CTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(18,'3', 1 , 4, 1, 'AC', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(19,'3', 1 , 4, 1, 'CTE', 0.15, 512, '#include <stdio.h>\\nint main() { printf(\"WA\\n\"); return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(20,'4', 1 , 1, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(21,'4', 1 , 2, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(22,'4', 1 , 3, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+(23,'4', 1 , 4, 1, 'AC', 0.001, 256, '#include <iostream>\\nint main() { std::cout << \"Hello, World!\"; return 0; }', '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 
 CREATE TABLE `local_submissions` (
@@ -585,7 +633,8 @@ INSERT INTO `contest_participants` (`id`, `contest_id`,`user_id`) VALUES
 (2, 1, '2'),
 (3, 2, '1'),
 (4, 2, '3'),
-(5, 1, '3');
+(5, 1, '3'),
+(6, 1, '4');
 
 --
 -- Struktur tabel `local_contest_participants`
@@ -602,7 +651,8 @@ INSERT INTO `local_contest_participants` (`id`, `contest_id`,`user_id`) VALUES
 (2, 1, '2'),
 (3, 2, '1'),
 (4, 2, '3'),
-(5, 1, '3');
+(5, 1, '3'),
+(6, 1, '4');
 
 --
 -- Struktur dari tabel `users`
@@ -638,21 +688,53 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 CREATE TABLE `contest_problems` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `contest_id` bigint(20) UNSIGNED NOT NULL,
-  `problem_id` bigint(20) UNSIGNED NOT NULL
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `time_limit` int(11) NOT NULL,
+  `memory_limit` int(11) NOT NULL,
+  `input_format` text NOT NULL,
+  `sample_input` text NOT NULL,
+  `output_format` text NOT NULL,
+  `sample_output` text NOT NULL,
+  `constraints` text NOT NULL,
+  `explanation` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+--
+-- Struktur dari tabel `contest problem_categories`
+--
+
+CREATE TABLE `contest_problem_categories` (
+  `id` int(11) NOT NULL,
+  `problem_id` int(10) UNSIGNED NOT NULL,
+  `category_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `contest problem_categories`
+--
+
+INSERT INTO `contest_problem_categories` (`id`, `problem_id`, `category_id`) VALUES
+(1, 1, 5), -- Soal 1 - String
+(2, 2, 29), -- Soal 2 - Math
+(3, 3, 29); -- Soal 3 - String
+
 
 --
 -- Dumping data untuk tabel `contest_problems`
 --
 
-INSERT INTO `contest_problems` (`id`, `contest_id`, `problem_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 1, 3),
-(4, 2, 4),
-(5, 2, 5),
-(6, 2, 6),
-(7, 2, 7);
+INSERT INTO `contest_problems` (`id`, `contest_id`, `title`,`description`, `time_limit`, `memory_limit`, `input_format`, `sample_input`, `output_format`, `sample_output`, `constraints`, `explanation`, `created_at`, `updated_at`) VALUES
+(1,1, 'Hallo, kamu!', 'Linus ingin membuat sebuah robot yang dapat mengeluarkan sapaan terhadap nama yang dituliskan di programnya. Sebagai contoh, bila diinputkan “Andre” maka robotnya akan menyapa “Halo, Andre!”. Kamu ditunjuk sebagai programmer yang membuat sistem dasarnya. Bantulah Linus untuk membuat programnya.', 1, 16, 'Sebuah nama yang ingin disapa', 'Ikhwan', 'Sebuah baris yang mengeluarkan panggilan dari nama tersebut.', 'Halo, Ikhwan!', 'Nama yang diinputkan terdiri dari huruf-huruf alfabet dan panjang nama tidak melebihi 100 karakter.', 'Program harus membaca nama yang diinputkan, dan mengeluarkan panggilan sesuai format yang diminta.', '2024-02-12 08:00:00', '2024-02-12 08:00:00'),
+(2,1, 'Penjumlahan Sederhana', 'Linus sedang belajar penjumlahan. Bantulah ia dengan membuat program yang menerima input dua bilangan bulat a dan b dan mengeluarkan hasil penjumlahannya.', 1, 16, 'Dua baris berisi satu bilangan bulat tiap baris.', '3\n5', 'Satu baris berisi hasil penjumlahan kedua bilangan.', '8', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9.', 'Program harus membaca dua bilangan (3 dan 5), dan mengeluarkan hasil penjumlahannya (8).', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(3,1, 'Kalkulator', 'Linus sedang kewalahan dengan barang dagangannya. Ia kelihatan kesulitan dalam menghitung jumlah, harga dan lain sebagainya. Oleh karena itu, Linus meminta anda untuk membuat kalkulator sederhana yang dapat menyelesaikan operasi dua angka. Kalkulator tersebut dapat menyelesaikan +, -, x dan /.', 1, 16, 'a o b, dimana a dan b adalah sebuah bilangan bulat dan o adalah operasi +, -, x atau /', '3 + 2', 'Sebuah hasil dari operasi matematika tersebut. Bila operasi tersebut pembagian, maka keluarkan hasil dalam bentuk float/double dengan presisi 2 dibelakang koma.', '5', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9. Operasi yang diizinkan adalah +, -, x, dan /.', 'Program harus membaca dua bilangan dan satu operator, dan mengeluarkan hasil operasi matematika sesuai dengan operator yang diberikan.', '2024-02-12 08:00:00', '2024-02-12 08:00:00'),
+(4,1, 'Hallo, kamu!', 'Linus ingin membuat sebuah robot yang dapat mengeluarkan sapaan terhadap nama yang dituliskan di programnya. Sebagai contoh, bila diinputkan “Andre” maka robotnya akan menyapa “Halo, Andre!”. Kamu ditunjuk sebagai programmer yang membuat sistem dasarnya. Bantulah Linus untuk membuat programnya.', 1, 16, 'Sebuah nama yang ingin disapa', 'Ikhwan', 'Sebuah baris yang mengeluarkan panggilan dari nama tersebut.', 'Halo, Ikhwan!', 'Nama yang diinputkan terdiri dari huruf-huruf alfabet dan panjang nama tidak melebihi 100 karakter.', 'Program harus membaca nama yang diinputkan, dan mengeluarkan panggilan sesuai format yang diminta.', '2024-02-12 08:00:00', '2024-02-12 08:00:00'),
+(5,2, 'Penjumlahan Sederhana', 'Linus sedang belajar penjumlahan. Bantulah ia dengan membuat program yang menerima input dua bilangan bulat a dan b dan mengeluarkan hasil penjumlahannya.', 1, 16, 'Dua baris berisi satu bilangan bulat tiap baris.', '3\n5', 'Satu baris berisi hasil penjumlahan kedua bilangan.', '8', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9.', 'Program harus membaca dua bilangan (3 dan 5), dan mengeluarkan hasil penjumlahannya (8).', '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
+(6,2, 'Kalkulator', 'Linus sedang kewalahan dengan barang dagangannya. Ia kelihatan kesulitan dalam menghitung jumlah, harga dan lain sebagainya. Oleh karena itu, Linus meminta anda untuk membuat kalkulator sederhana yang dapat menyelesaikan operasi dua angka. Kalkulator tersebut dapat menyelesaikan +, -, x dan /.', 1, 16, 'a o b, dimana a dan b adalah sebuah bilangan bulat dan o adalah operasi +, -, x atau /', '3 + 2', 'Sebuah hasil dari operasi matematika tersebut. Bila operasi tersebut pembagian, maka keluarkan hasil dalam bentuk float/double dengan presisi 2 dibelakang koma.', '5', 'Bilangan yang diinputkan merupakan bilangan bulat dalam rentang -10^9 hingga 10^9. Operasi yang diizinkan adalah +, -, x, dan /.', 'Program harus membaca dua bilangan dan satu operator, dan mengeluarkan hasil operasi matematika sesuai dengan operator yang diberikan.', '2024-02-12 08:00:00', '2024-02-12 08:00:00');
+
 
 --
 -- Strultur dari tabel `local_contest_problems`
@@ -760,6 +842,12 @@ ALTER TABLE `problem_categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `contest problem_categories`
+--
+ALTER TABLE `contest_problem_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `submissions`
 --
 ALTER TABLE `submissions`
@@ -768,6 +856,12 @@ ALTER TABLE `submissions`
 -- Indeks untuk tabel `local_submissions`
 --
 ALTER TABLE `local_submissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `contest_submissions`
+--
+ALTER TABLE `contest_submissions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -868,6 +962,12 @@ ALTER TABLE `problem_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT untuk tabel `contest_problem_categories`
+--
+ALTER TABLE `contest_problem_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT untuk tabel `submissions`
 --
 ALTER TABLE `submissions`
@@ -877,6 +977,12 @@ ALTER TABLE `submissions`
 -- AUTO_INCREMENT untuk tabel `local_submissions`
 --
 ALTER TABLE `local_submissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  
+--
+-- AUTO_INCREMENT untuk tabel `contest_submissions`
+--
+ALTER TABLE `contest_submissions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -933,6 +1039,13 @@ COMMIT;
 --
 ALTER TABLE `local_test_cases`
   ADD CONSTRAINT `local_test_cases_problem_id_foreign` FOREIGN KEY (`problem_id`) REFERENCES `problems` (`id`);
+COMMIT;
+
+--
+-- Ketidakleluasaan untuk tabel `contest_submissions`
+--
+ALTER TABLE `contest_submissions`
+  ADD CONSTRAINT `contest_submissions_contest_id_foreign` FOREIGN KEY (`contest_id`) REFERENCES `contests` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

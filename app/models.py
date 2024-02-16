@@ -44,6 +44,7 @@ class Category(Base):
     name = Column(String)
     problems = relationship("Problem", secondary="problem_categories", back_populates="categories")
     local_problems = relationship("LocalProblem", secondary="local_problem_categories", back_populates="categories")
+    contest_problems = relationship("ContestProblem",secondary="contest_problem_categories", back_populates="categories")
     
     
 class ProblemCategory(Base):
@@ -129,8 +130,42 @@ class ContestProblem(Base):
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     contest_id = Column(Integer, ForeignKey("contests.id"))
-    problem_id = Column(Integer, ForeignKey("problems.id"))
+    title = Column(String(255))
+    # user_id = Column(String(255), ForeignKey("users.id"))
+    description = Column(String)
+    time_limit = Column(Integer)
+    memory_limit = Column(Integer)
+    input_format = Column(String)
+    sample_input = Column(String)
+    output_format = Column(String)
+    sample_output = Column(String)
+    constraints = Column(String)
+    explanation = Column(String, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    categories = relationship("Category", secondary="contest_problem_categories", back_populates="contest_problems")
 
+class ContestProblemCategory(Base):
+    __tablename__ = "contest_problem_categories"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    category_id = Column(String, ForeignKey("categories.id"))
+    problem_id = Column(Integer, ForeignKey("contest_problems.id"))
+    
+class ContestSubmission(Base):
+    __tablename__ = "contest_submissions"
+    
+    id = Column(Integer, primary_key=True, index= True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    contest_id = Column(Integer, ForeignKey("contests.id"))
+    problem_id = Column(Integer, ForeignKey("contest_problems.id"))
+    language_id = Column(Integer, ForeignKey("languages.id"))
+    status = Column(String, default=None)
+    time = Column(Float)
+    memory = Column(Integer)
+    code = Column(String, default="")
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    
 ################## LOCAL ######################
 
 class LocalContest(Base):

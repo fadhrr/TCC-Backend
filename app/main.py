@@ -9,9 +9,11 @@ from typing import Annotated
 from pydantic import BaseModel
 from routers import users, problems, admins, languages, submissions, categories, test_cases, contests, test_case_results, contest_participants, contest_problems
 from routers.local import local_test_cases, local_test_case_results , local_contests, local_contest_participants, local_contest_problems
-
 from fastapi.middleware.cors import CORSMiddleware
-
+## Untuk Logging
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
+# logger = logging.getLogger("uvicorn")
 
 app = FastAPI(
     title="TCC API",
