@@ -3,7 +3,7 @@ from models import Submission, User, TestCase, TestCaseResult, Language
 from pydantic import BaseModel
 from database import SessionLocal
 from sqlalchemy import desc
-import logging
+# import logging
 import json
 from sqlalchemy.orm import Session
 from fastapi import Depends
@@ -14,7 +14,7 @@ import os
 import httpx
 load_dotenv()
 
-logger = logging.getLogger("uvicorn")
+# logger = logging.getLogger("uvicorn")
 router = APIRouter()
 class WriteSubmissionBase(BaseModel):
     user_id : str
