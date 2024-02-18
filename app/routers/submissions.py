@@ -134,10 +134,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     # logger.info(payloads)
     url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
     res = httpx.post(url, json=payloads)
-    # logger.info(res.text)
-    # return res.text
     if res is not None:
-        
         result = json.loads(res.text)
         
         # add test case results to database
@@ -160,6 +157,10 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
         # return result
     
         return {"message" : "submission created successfully"}
+    db_new_submission.status = "CTE"
+    db.add(db_new_submission)
+    db.commit()
+    db.refresh(db_new_submission)
     return {"message" : "Error in submission"}
     
     
