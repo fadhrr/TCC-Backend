@@ -679,7 +679,16 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 ('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('4', 'Fajry', '2108107010059', 300, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-('jNziwj73vyUOunOsT87LvCeqlDr2', 'alfnsnff', '2108107010047', 200, 'alfnsnff@gmail.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('3ndoWdxlZAaANAHO5Ke5TTu6KZx2', 'alfnsnff', '12345678', 0, 'asep@gmail.com', NULL, NULL, '2024-02-19 11:33:03', '2024-02-19 11:33:03'),
+('jNziwj73vyUOunOsT87LvCeqlDr2', 'alfnsnff', '2108107010047', 200, 'alfnsnff@gmail.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('8tq1NXekcPQ7PJWOBYhURBGvzvv1', '12312312312', '1231231231', 120, 'tester@gmail.com', NULL, NULL, '2024-02-19 11:35:01', '2024-02-19 11:35:01'),
+('E8tKceEBatPlsKnXSoHEIvzSwAu1', 'alfnsnff', '2108107010047', 120, 'alfnsnff@gmail.com', NULL, NULL, '2024-02-19 09:58:54', '2024-02-19 09:58:54'),
+('hKNPEPnnMhXq9oAdiuIYcnO3ZRm1', 'test1', '123456', 120, 'alfan.s.nufi@gmail.com', NULL, NULL, '2024-02-19 11:16:39', '2024-02-19 11:16:39'),
+('iUzNaWaDYTNYJcPIsVrWKnuYIZD3', 'riparuk', '2108107010073', 120, 'faruqirifa@gmail.com', NULL, NULL, '2024-02-18 22:20:40', '2024-02-18 22:20:40'),
+('MXvSL2vzZHSyA1UeFEy8Qd5mlqp2', 'alfnsnff', '2108107010047', 120, 'alfan.nufi@gmail.com', NULL, NULL, '2024-02-19 11:43:45', '2024-02-19 11:43:45'),
+('nqtXNLbE5KTp4ttQ090VWJWrpK43', 'Papazy', 'fajryjobs@gmail.com', 120, 'fajry@mhs.usk.ac.id', NULL, NULL, '2024-02-18 21:55:45', '2024-02-18 21:55:45'),
+('OeK8F2zbetdA8V3kBIGJlBvMPNf2', 'Papazy', '2108107010059', 120, 'fajryjobs@gmail.com', NULL, NULL, '2024-02-18 22:42:06', '2024-02-18 22:42:06'),
+('yRnMjVEdgcTDz0zPuttWzfGMpBI2', 'wwer', '123', 120, 'jenni.blackpink@gmail.com', NULL, NULL, '2024-02-19 11:17:41', '2024-02-19 11:17:41');
 
 --
 -- Struktur dari tabel `contest_problems`
