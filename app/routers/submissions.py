@@ -7,7 +7,7 @@ from sqlalchemy import desc
 import json
 from sqlalchemy.orm import Session
 from fastapi import Depends
- 
+import time
 
 from dotenv import load_dotenv
 import os
@@ -133,20 +133,27 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     # logger.info("payloads\n")
     # logger.info(payloads)
     url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
+    start_time = time.time()
     res = httpx.post(url, json=payloads)
     if res is not None:
         result = json.loads(res.text)
+        elapsed_time = time.time() - start_time
+        # Periksa apakah waktu lebih dari 3 menit
+        if elapsed_time > 180:
+            db_new_submission.status = "TLE"  # Waktu habis
+            db_new_submission.time = 180.00
+        else:
         
-        # add test case results to database
-        test_case_results = result["results"]
-        for test_case_result in test_case_results:
-            db_test_case_result = TestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
-            db.add(db_test_case_result)
-        
-        # add submission result to database
-        
-        db_new_submission.status = result["verdict"]
-        db_new_submission.time = result["avg_time"]
+            # add test case results to database
+            test_case_results = result["results"]
+            for test_case_result in test_case_results:
+                db_test_case_result = TestCaseResult(submission_id = db_new_submission.id, status = test_case_result["status"], time = test_case_result["time"])
+                db.add(db_test_case_result)
+            
+            # add submission result to database
+            
+            db_new_submission.status = result["verdict"]
+            db_new_submission.time = result["avg_time"]
         # db_new_submission.memory = result["avg_memory"]   
         db.add(db_new_submission)
         db.commit()
@@ -157,6 +164,17 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
         # return result
     
         return {"message" : "submission created successfully"}
+    
+    # Periksa apakah waktu lebih dari 3 menit
+    if time.time() - start_time > 180:
+        db_new_submission.status = "TLE"
+        db_new_submission.time = 180.00
+        db.add(db_new_submission)
+        db.commit()
+        db.refresh(db_new_submission)
+        db.close()
+        return {"message": "Submission Time Limit Exceeded"}
+    
     db_new_submission.status = "CTE"
     db.add(db_new_submission)
     db.commit()

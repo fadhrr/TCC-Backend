@@ -678,8 +678,8 @@ INSERT INTO `users` (`id`, `name`, `nim`, `score`, `email`, `email_verified_at`,
 ('1', 'Admin User', 'A12345', 150, 'admin@example.com', NULL, NULL, '2024-01-26 10:28:42', '2024-01-26 10:28:42'),
 ('2', 'John Doe', 'B67890', 100, 'john.doe@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
 ('3', 'Jane Smith', 'C54321', 120, 'jane.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-('4', 'Fajry', '2108107010059', 0, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
-('jNziwj73vyUOunOsT87LvCeqlDr2', 'alfnsnff', '2108107010047', 0, 'alfnsnff@gmail.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
+('4', 'Fajry', '2108107010059', 300, 'Fajry.smith@example.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43'),
+('jNziwj73vyUOunOsT87LvCeqlDr2', 'alfnsnff', '2108107010047', 200, 'alfnsnff@gmail.com', NULL, NULL, '2024-01-26 10:28:43', '2024-01-26 10:28:43');
 
 --
 -- Struktur dari tabel `contest_problems`
@@ -863,6 +863,16 @@ ALTER TABLE `local_submissions`
 --
 ALTER TABLE `contest_submissions`
   ADD PRIMARY KEY (`id`);
+--
+-- Indeks untuk tabel `contest_participants`
+--
+ALTER TABLE `contest_participants`
+  ADD PRIMARY KEY (`id`);
+--
+-- Indeks untuk tabel `local_contest_participants`
+--
+ALTER TABLE `local_contest_participants`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `test_cases`
@@ -983,6 +993,18 @@ ALTER TABLE `local_submissions`
 -- AUTO_INCREMENT untuk tabel `contest_submissions`
 --
 ALTER TABLE `contest_submissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  
+--
+-- AUTO_INCREMENT untuk tabel `contest_participants`
+--
+ALTER TABLE `contest_participants`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  
+--
+-- AUTO_INCREMENT untuk tabel `local_contest_participants`
+--
+ALTER TABLE `local_contest_participants`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --

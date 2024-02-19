@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from database import SessionLocal
 from models import ContestParticipant
 from pydantic import BaseModel
@@ -20,9 +20,7 @@ class WriteContestParticipantBase(BaseModel):
     user_id : str
 
 @router.get("/api/contest/participants", tags=["Contest", "Contest Participant"])
-def read_all_participants(db: Session = Depends(get_db)):
-    
-    
+def read_all_contests_participants(db: Session = Depends(get_db)):
     db_contest_participants = db.query(ContestParticipant).all()
     return db_contest_participants
 
@@ -42,3 +40,13 @@ def write_participants(new_contest_participant,db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_new_contest_participant)
     return {"Message" : "Contest participant inserted succesfully"}
+
+@router.delete("/api/contest/{contest_id}/participant/{user_id}", tags=["Contest", "Contest Participant"])
+def delete_participant(contest_id: int, user_id: str, db : Session = Depends(get_db)):
+    db_participant = db.query(ContestParticipant).filter(ContestParticipant.contest_id == contest_id, ContestParticipant.user_id == user_id).first()
+    if db_participant is None :
+        raise HTTPException(status_code=404, detail="No participant found on this contest")
+    db.delete(db_participant)
+    db.commit()
+    return {"message" : "participant has been deleted"}
+    
