@@ -154,7 +154,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
             
             db_new_submission.status = result["verdict"]
             db_new_submission.time = result["avg_time"]
-        # db_new_submission.memory = result["avg_memory"]   
+        db_new_submission.memory = result["avg_memory"]   
         db.add(db_new_submission)
         db.commit()
         db.refresh(db_new_submission)
