@@ -134,7 +134,7 @@ def write_submission(new_submission : WriteSubmissionBase,db: Session = Depends(
     # logger.info(payloads)
     url = f"http://{os.getenv('JUDGER_HOST')}:{os.getenv('JUDGER_PORT')}/api/judge"
     start_time = time.time()
-    res = httpx.post(url, json=payloads)
+    res = httpx.post(url, json=payloads, timeout=None)
     if res is not None:
         result = json.loads(res.text)
         elapsed_time = time.time() - start_time
