@@ -75,6 +75,9 @@ class Submission(Base):
     code = Column(String, default="")
     created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     
+    
+    
+    
 
 class TestCase(Base):
     __tablename__ = "test_cases"
