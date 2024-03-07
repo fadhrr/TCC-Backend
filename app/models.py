@@ -126,8 +126,8 @@ class ContestParticipant(Base):
     __tablename__ = "contest_participants"
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    user_id = Column(String, ForeignKey("users.id"))
     contest_id = Column(Integer, ForeignKey("contests.id"))
+    user_id = Column(String, ForeignKey("users.id"))
     
 class ContestProblem(Base):
     __tablename__ = "contest_problems"
