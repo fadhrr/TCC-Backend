@@ -51,8 +51,9 @@ class ProblemCategory(Base):
     __tablename__ = "problem_categories"
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    category_id = Column(String, ForeignKey("categories.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"))
     problem_id = Column(Integer, ForeignKey("problems.id"))
+    
     
 class Language(Base):
     __tablename__ ="languages"
@@ -147,13 +148,14 @@ class ContestProblem(Base):
     created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     categories = relationship("Category", secondary="contest_problem_categories", back_populates="contest_problems")
+    
 
 class ContestProblemCategory(Base):
     __tablename__ = "contest_problem_categories"
     
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    category_id = Column(String, ForeignKey("categories.id"))
-    problem_id = Column(Integer, ForeignKey("contest_problems.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"))
+    contest_problem_id = Column(Integer, ForeignKey("contest_problems.id"))
     
 class ContestSubmission(Base):
     __tablename__ = "contest_submissions"
@@ -168,6 +170,38 @@ class ContestSubmission(Base):
     memory = Column(Integer)
     code = Column(String, default="")
     created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    
+    
+    # ??
+class ContestTestCase(Base):
+    __tablename__ = "contest_test_cases"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    problem_id = Column(Integer, ForeignKey("contest_problems.id"))
+    input = Column(String)
+    output = Column(String)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+
+class ContestTestCaseResult(Base):
+    __tablename__ = "contest_test_case_results"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    submission_id = Column(Integer, ForeignKey("contest_submissions.id"))
+    status = Column(String, default=None)
+    time = Column(Float, default=None)
+    memory = Column(Integer, default=None)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+
+class Notification(Base):
+    __tablename__ = "notifications"
+    
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    contest_id = Column(String, ForeignKey("contest.id"))
+    title = Column(String)
+    description = Column(String)
+    created_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
+    updated_at = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=7))
     
 ################## LOCAL ######################
 

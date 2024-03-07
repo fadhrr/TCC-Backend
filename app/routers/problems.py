@@ -164,3 +164,19 @@ def function(problem_id : int,db: Session = Depends(get_db)):
 #         raise HTTPException(status_code=404, detail="Problem not found")
 #     # db_categories = db_problem.categories
 #     return db_problem
+
+
+@router.post("/api/problems/{problem_id}/categories/{category_id}", tags=["Problem", "Category"])
+def add_problem_category(problem_id : int, category_id : int, db: Session = Depends(get_db)):
+    problem = db.query(Problem).filter(Problem.id == problem_id).first()
+    category = db.query(Category).filter(Category.id == category_id).first()
+    if problem is None or category is None:
+        raise HTTPException(status_code=404, detail="Problem or Category not found")
+    try:
+        new_problem_category = ProblemCategory(problem_id = problem_id, category_id = category_id)
+        db.add(new_problem_category)
+        db.commit()
+        return {"message" : "Category added successfully"}
+    except:
+        raise HTTPException(status_code=400, detail="Problem already has this category")
+        

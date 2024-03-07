@@ -1,16 +1,24 @@
 from fastapi import APIRouter, HTTPException
 from database import SessionLocal
-from models import Contest, ContestProblem, ContestProblemCategory, Category, ContestParticipant, User, ContestSubmission
+from models import (
+    Contest,
+    ContestProblem,
+    ContestProblemCategory,
+    Category,
+    ContestParticipant,
+    User,
+    ContestSubmission,
+)
 from pydantic import BaseModel
 from datetime import datetime
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from fastapi import Depends
 
 ## Untuk Loggin
-# import logging
+import logging
 
-# logging.basicConfig(level=logging.DEBUG)
-# logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 router = APIRouter()
@@ -119,49 +127,14 @@ def contest_problems(contest_id: int, db: Session = Depends(get_db)):
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     if db_contest is None:
         raise HTTPException(status_code=404, detail="Contest Not Found")
-    db_problems = (
-        db.query(ContestProblem).filter(ContestProblem.contest_id == contest_id).all()
+    db_contest_problems = (
+        db.query(ContestProblem)
+        .filter(ContestProblem.contest_id == contest_id)
+        .options(joinedload(ContestProblem.categories))
+        .all()
     )
-    categories = []
-    for db_problem in db_problems:
-        db_category = (
-            db.query(ContestProblemCategory)
-            .filter(ContestProblemCategory.contest_problem_id == db_problem.id)
-            .all()
-        )
-        category = []
-        for cat in db_category:
-            category.append(cat.category_id)
-        categories.append(category)
-    return {
-        "id": db_contest.id,
-        "title": db_contest.title,
-        "slug": db_contest.slug,
-        "description": db_contest.description,
-        "time_limit": db_contest.time_limit,
-        "memory_limit": db_contest.memory_limit,
-        "input_format": db_contest.input_format,
-        "sample_input": db_contest.sample_input,
-        "output_format": db_contest.output_format,
-        "sample_output": db_contest.sample_output,
-        "constraints": db_contest.constraints,
-        "explanation": db_contest.explanation,
-        "created_at": db_contest.created_at,
-        "updated_at": db_contest.updated_at,
-        "categories": categories,
-    }
-    
 
-
-
-
-
-
-
-
-
-
-
+    return db_contest_problems
 
 
 @router.get("/api/contest/{contest_id}/scoreboard", tags=["Contest", "Scoreboard"])
@@ -169,11 +142,23 @@ def contest_scoreboard(contest_id: int, db: Session = Depends(get_db)):
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     if db_contest is None:
         raise HTTPException(status_code=404, detail="Contest Not Found")
-    db_contestants = db.query(ContestParticipant).filter(ContestParticipant.contest_id == contest_id).all()
-    db_problems = db.query(ContestProblem).filter(ContestProblem.contest_id == contest_id).all()
+    db_contestants = (
+        db.query(ContestParticipant)
+        .filter(ContestParticipant.contest_id == contest_id)
+        .all()
+    )
+    db_problems = (
+        db.query(ContestProblem).filter(ContestProblem.contest_id == contest_id).all()
+    )
     problems_length = len(db_problems)
     contestants_length = len(db_contestants)
-    logger.debug({"contest_id": contest_id, "contestants": db_contestants, "problems": db_problems})
+    logger.debug(
+        {
+            "contest_id": contest_id,
+            "contestants": db_contestants,
+            "problems": db_problems,
+        }
+    )
     scoreboard = []
     for contestant in db_contestants:
         contestants_data = db.query(User).filter(User.id == contestant.user_id).first()
@@ -182,90 +167,146 @@ def contest_scoreboard(contest_id: int, db: Session = Depends(get_db)):
         score = 0
         user_attempted = 0
         for problem in db_problems:
-            problem_data = db.query(ContestProblem).filter(ContestProblem.id == problem.id).first()
+            problem_data = (
+                db.query(ContestProblem).filter(ContestProblem.id == problem.id).first()
+            )
 
             # logger.debug({"problem_id": problem_data.id, "contest_id": contest_id, "user_id": contestant.user_id})
 
-            submissions = db.query(ContestSubmission).filter(ContestSubmission.contest_id == contest_id, ContestSubmission.user_id == contestant.user_id, ContestSubmission.problem_id == problem.id).all()
+            submissions = (
+                db.query(ContestSubmission)
+                .filter(
+                    ContestSubmission.contest_id == contest_id,
+                    ContestSubmission.user_id == contestant.user_id,
+                    ContestSubmission.problem_id == problem.id,
+                )
+                .all()
+            )
 
             # logger.debug({"submission" : submissions})
-            
+
             user_attempted += len(submissions)
             if len(submissions) == 0:
-                problems.append({
-                    "problem_id": problem_data.id, 
-                    "attempted": 0,
-                    "created_at": "Not Attempted",
-                    "status": "Not Attempted"
-                })
+                problems.append(
+                    {
+                        "problem_id": problem_data.id,
+                        "attempted": 0,
+                        "created_at": "Not Attempted",
+                        "status": "Not Attempted",
+                    }
+                )
             elif len(submissions) > 1:
                 status = submissions[0].status
                 for submission in submissions:
-                    total_time_used = total_time_used + ((submission.created_at - db_contest.start_time).total_seconds()/60)
+                    total_time_used = total_time_used + (
+                        (submission.created_at - db_contest.start_time).total_seconds()
+                        / 60
+                    )
                     # Cek jika ada submission AC, maka AC
                     if submission.status == "AC":
                         status = "AC"
                         score += 1
                         break
-                problems.append({
-                    "problem_id": problem_data.id, 
-                    "attempted": len(submissions),
-                    "created_at": submissions[0].created_at,
-                    "status": status
-                })
+                problems.append(
+                    {
+                        "problem_id": problem_data.id,
+                        "attempted": len(submissions),
+                        "created_at": submissions[0].created_at,
+                        "status": status,
+                    }
+                )
             else:
-                total_time_used = total_time_used + ((submissions[0].created_at - db_contest.start_time).total_seconds()/60)
+                total_time_used = total_time_used + (
+                    (submissions[0].created_at - db_contest.start_time).total_seconds()
+                    / 60
+                )
                 if submissions[0].status == "AC":
                     score += 1
-                problems.append({
-                    "problem_id": problem_data.id, 
-                    "attempted": len(submissions),
-                    "created_at": submissions[0].created_at,
-                    "status": submissions[0].status
-                })
-                
-        scoreboard.append({
-            "user": {
-                "id" : contestants_data.id,
-                "username": contestants_data.name,
-                "score" : score,
-                "attempted": user_attempted,
-                "total_time_used": total_time_used
+                problems.append(
+                    {
+                        "problem_id": problem_data.id,
+                        "attempted": len(submissions),
+                        "created_at": submissions[0].created_at,
+                        "status": submissions[0].status,
+                    }
+                )
+
+        scoreboard.append(
+            {
+                "user": {
+                    "id": contestants_data.id,
+                    "username": contestants_data.name,
+                    "score": score,
+                    "attempted": user_attempted,
+                    "total_time_used": total_time_used,
                 },
-            "problems": problems
-        })
-    sorted_data = sorted(scoreboard, key=lambda x: (x['user']['score'], -x['user']['total_time_used']), reverse=True)
-    
+                "problems": problems,
+            }
+        )
+    sorted_data = sorted(
+        scoreboard,
+        key=lambda x: (x["user"]["score"], -x["user"]["total_time_used"]),
+        reverse=True,
+    )
+
     return {
         "contest": db_contest,
-        "problem_length" : problems_length,
-        "contestants_length" : contestants_length,
-        "contestants": sorted_data
+        "problem_length": problems_length,
+        "contestants_length": contestants_length,
+        "contestants": sorted_data,
     }
-    
 
-@router.get("/api/contest/{contest_id}/user/{user_id}/problems/{problems_id}", tags=["Contest", "Testing"])
-def contest_user_problems(contest_id: int, user_id: int, problems_id: int, db: Session = Depends(get_db)):
+
+@router.get(
+    "/api/contest/{contest_id}/user/{user_id}/problems/{problems_id}",
+    tags=["Contest", "Testing"],
+)
+def contest_user_problems(
+    contest_id: int, user_id: int, problems_id: int, db: Session = Depends(get_db)
+):
     db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
     if db_contest is None:
         raise HTTPException(status_code=404, detail="Contest Not Found")
-    db_contestants = db.query(ContestParticipant).filter(ContestParticipant.contest_id == contest_id, ContestParticipant.user_id == user_id).first()
+    db_contestants = (
+        db.query(ContestParticipant)
+        .filter(
+            ContestParticipant.contest_id == contest_id,
+            ContestParticipant.user_id == user_id,
+        )
+        .first()
+    )
     if db_contestants is None:
         raise HTTPException(status_code=404, detail="User Not Found")
-    db_problems = db.query(ContestProblem).filter(ContestProblem.contest_id == contest_id, ContestProblem.id == problems_id).first()
+    db_problems = (
+        db.query(ContestProblem)
+        .filter(
+            ContestProblem.contest_id == contest_id, ContestProblem.id == problems_id
+        )
+        .first()
+    )
     if db_problems is None:
         raise HTTPException(status_code=404, detail="Problem Not Found")
-    db_submissions = db.query(ContestSubmission).filter(ContestSubmission.contest_id == contest_id, ContestSubmission.user_id == user_id, ContestSubmission.problem_id == problems_id).all()
+    db_submissions = (
+        db.query(ContestSubmission)
+        .filter(
+            ContestSubmission.contest_id == contest_id,
+            ContestSubmission.user_id == user_id,
+            ContestSubmission.problem_id == problems_id,
+        )
+        .all()
+    )
     submissions = []
     for submission in db_submissions:
-        submissions.append({
-            "id": submission.id,
-            "status": submission.status,
-            "created_at": submission.created_at
-        })
+        submissions.append(
+            {
+                "id": submission.id,
+                "status": submission.status,
+                "created_at": submission.created_at,
+            }
+        )
     return {
         "contest": db_contest,
         "user": db_contestants,
         "problem": db_problems,
-        "submissions": submissions
+        "submissions": submissions,
     }

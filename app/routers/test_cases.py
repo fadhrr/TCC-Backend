@@ -62,6 +62,18 @@ def delete_test_case(test_case_id : int, db: Session = Depends(get_db)):
     
     return {"message" : "Test case deleted succcesfully"}
 
+@router.put("/api/test_case/{test_case_id}", tags=["Test Cases"])
+def update_test_case(test_case_id: int, new_test_case: WriteTestCaseBase, db: Session = Depends(get_db)):
+    test_case = db.query(TestCase).filter(TestCase.id == test_case_id).first()
+    if not test_case:
+        raise HTTPException(status_code=404, detail="Test Case not found")
+    test_case.problem_id = new_test_case.problem_id
+    test_case.input = new_test_case.input
+    test_case.output = new_test_case.output
+    db.add(test_case)
+    db.commit()
+    return {"message": "Test Case updated successfully"}
+
 
 
     

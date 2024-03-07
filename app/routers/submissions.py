@@ -60,6 +60,8 @@ def formatting_status(result):
         return "Time Limit Exceeded"
     elif result == "CTE":
         return "Compile Time Error"
+    elif result == "ISE":
+        return "Failed"
     else:
         return result
 
@@ -89,6 +91,8 @@ def formatting_result(db_submissions_data, db):
             }
         )
     return value
+
+
 
 
 @router.get("/api/submissions", tags=["Submission"])
@@ -173,12 +177,12 @@ def send_to_judge(db: Session, db_new_submission: SubmissionBase, payloads: dict
             db.refresh(db_new_submission)
             logger.info("Submission has been Judged Successfully    ")
         else:
-            db_new_submission.status = "CTE"
+            db_new_submission.status = "ISE"
             db.add(db_new_submission)
             db.commit()
             logger.info("Submission has not been Judged")
     except Exception as e:
-        db_new_submission.status = "CTE"
+        db_new_submission.status = "ISE"
         db.add(db_new_submission)
         db.commit()
         logger.info(f"Submission has not been Judged, Error : {str(e)}")
@@ -224,8 +228,8 @@ async def async_write_submission(
         background_tasks.add_task(send_to_judge, db, db_new_submission, payloads)
         return {"message": "Submission is being judged"}
     except Exception as e:
-        # Jika terjadi error, status = compile time error
-        db_new_submission.status = "CTE"
+        # Jika terjadi error, status = Internal Server Error
+        db_new_submission.status = "ISE"
         db.add(db_new_submission)
         db.commit()
         db.close()
