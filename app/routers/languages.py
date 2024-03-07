@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from models import Language
-from database import SessionLocal
+from ..models import Language
+from ..database import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi import Depends
  

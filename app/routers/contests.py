@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from database import SessionLocal
-from models import (
+from ..database import SessionLocal
+from ..models import (
     Contest,
     ContestProblem,
     ContestProblemCategory,
@@ -79,7 +79,10 @@ def write_contest(new_contest: WriteContestBase, db: Session = Depends(get_db)):
     db.add(new_db_contest)
     db.commit()
     db.refresh(new_db_contest)
-    return {"message": "Contest created successfully"}
+    return {"message": "Contest created successfully",
+            "Status" : 200,
+            "contest" : new_db_contest}
+    
 
 
 @router.put("/api/contest/{contest_id}", tags=["Contest"])

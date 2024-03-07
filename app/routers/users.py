@@ -4,8 +4,8 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import desc
 from pydantic import BaseModel
-from database import SessionLocal
-from models import User, Admin
+from ..database import SessionLocal
+from ..models import User, Admin
 from sqlalchemy.orm import Session
 
 

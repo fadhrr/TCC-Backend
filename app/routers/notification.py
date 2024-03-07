@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from database import SessionLocal
-from models import User, Admin, Notification
+from ..database import SessionLocal
+from ..models import User, Admin, Notification
 from pydantic import BaseModel
 from typing import List
 from sqlalchemy import desc
@@ -79,5 +79,4 @@ def delete_notification(notification_id: int, db: Session = Depends(get_db)):
     db.delete(notification)
     db.commit()
     return {"message": "Notification deleted successfully"}
-
 

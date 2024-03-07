@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks
-from models import Submission, User, TestCase, TestCaseResult, Language
+from ..models import Submission, User, TestCase, TestCaseResult, Language
 from pydantic import BaseModel
-from database import SessionLocal
+from ..database import SessionLocal
 from sqlalchemy import desc
 
 import logging

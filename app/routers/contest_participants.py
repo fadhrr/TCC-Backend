@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from database import SessionLocal
-from models import ContestParticipant
+from ..database import SessionLocal
+from ..models import ContestParticipant
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from fastapi import Depends

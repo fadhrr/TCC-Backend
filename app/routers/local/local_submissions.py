@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from models import LocalSubmission, User, LocalTestCase, LocalTestCaseResult, Language
+from ...models import LocalSubmission, User, LocalTestCase, LocalTestCaseResult, Language
 from pydantic import BaseModel
-from database import SessionLocal
+from ...database import SessionLocal
 from sqlalchemy import desc
 import logging
 import json

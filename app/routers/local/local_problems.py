@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Path, Query, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
-from database import SessionLocal
-from models import LocalProblem, ProblemCategory, Category
+from ...database import SessionLocal
+from ...models import LocalProblem, ProblemCategory, Category
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.orm import Session
 from fastapi import Depends

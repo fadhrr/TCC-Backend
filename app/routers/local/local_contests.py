@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from database import SessionLocal
-from models import LocalContest 
+from ...database import SessionLocal
+from ...models import LocalContest 
 from pydantic import BaseModel
 from datetime import datetime
 from sqlalchemy.orm import Session

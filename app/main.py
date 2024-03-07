@@ -3,13 +3,13 @@ from typing import Union
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
-from database import engine, SessionLocal
-import models
+from .routers import problem_test_case_results, problem_test_cases
+from .routers import users, problems, admins, languages, submissions, categories, contests, contest_participants, contest_problems, notification
+from .database import engine, SessionLocal
 from typing import Annotated
 from pydantic import BaseModel
-from routers import users, problems, admins, languages, submissions, categories, test_cases, contests, test_case_results, contest_participants, contest_problems, notification
 
-from routers.local import local_test_cases, local_test_case_results , local_contests, local_contest_participants, local_contest_problems
+from .routers.local import local_test_cases, local_test_case_results , local_contests, local_contest_participants, local_contest_problems
 from fastapi.middleware.cors import CORSMiddleware
 ## Untuk Logging
 # import logging
@@ -55,8 +55,8 @@ app.include_router(categories.router)
 app.include_router(contests.router)
 app.include_router(contest_participants.router)
 app.include_router(contest_problems.router)
-app.include_router(test_cases.router)
-app.include_router(test_case_results.router)
+app.include_router(problem_test_cases.router)
+app.include_router(problem_test_case_results.router)
 app.include_router(notification.router)
 
 app.include_router(local_test_cases.router)
@@ -64,5 +64,6 @@ app.include_router(local_test_case_results.router)
 app.include_router(local_contests.router)
 app.include_router(local_contest_participants.router)
 app.include_router(local_contest_problems.router)
+
 
 

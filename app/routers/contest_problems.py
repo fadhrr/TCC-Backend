@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from models import ContestProblem, Problem
-from database import SessionLocal
+from ..models import ContestProblem, Problem
+from ..database import SessionLocal
 
 
 router = APIRouter()
