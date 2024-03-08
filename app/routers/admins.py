@@ -67,7 +67,7 @@ def write_admin(new_admin : WriteAdminBase,db: Session = Depends(get_db)):
     db.add(db_new_admin)
     db.commit()
     db.refresh(db_new_admin)
-    return {"message" : "Admin created successfully"}
+    return {"message" : "Admin created successfully", "data" : db_new_admin}
     
 @router.delete('/api/admin/{admin_id}', tags=["Admin"])
 def delete_admin(admin_id : str,db: Session = Depends(get_db)):

@@ -11,10 +11,7 @@ from pydantic import BaseModel
 
 from .routers.local import local_test_cases, local_test_case_results , local_contests, local_contest_participants, local_contest_problems
 from fastapi.middleware.cors import CORSMiddleware
-## Untuk Logging
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-# logger = logging.getLogger("uvicorn")
+
 
 app = FastAPI(
     title="TCC API",

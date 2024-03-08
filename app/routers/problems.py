@@ -93,7 +93,8 @@ def create_problem(new_problem : WriteProblemBase,db: Session = Depends(get_db))
     db.add(problem)
     db.commit()
     db.refresh(problem)
-    return {"message": "Problems created successfully"}
+    return {"message": "Problems created successfully",
+            "data" : problem}
 
 @router.put('/api/problem/{problem_id}', tags=["Problem"])
 def update_problem(problem_id : int, new_problem : UpdatedProblemBase,db: Session = Depends(get_db)):
@@ -176,7 +177,7 @@ def add_problem_category(problem_id : int, category_id : int, db: Session = Depe
         new_problem_category = ProblemCategory(problem_id = problem_id, category_id = category_id)
         db.add(new_problem_category)
         db.commit()
-        return {"message" : "Category added successfully"}
+        return {"message" : "Category added successfully", "data" : new_problem_category}
     except:
         raise HTTPException(status_code=400, detail="Problem already has this category")
         

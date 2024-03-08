@@ -56,7 +56,7 @@ def write_notification(new_notification : WriteNotificationBase, db: Session = D
     db.add(db_new_notification)
     db.commit()
     db.refresh(db_new_notification)
-    return {"message" : "Notification created successfully"}
+    return {"message" : "Notification created successfully", "id" : db_new_notification.id}
 
 @router.put("/api/notification/{notification_id}", tags=["Notification"])
 def update_notification(notification_id: int, notification_data: UpdateNotificationBase, db: Session = Depends(get_db)):

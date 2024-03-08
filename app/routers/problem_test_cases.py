@@ -48,7 +48,7 @@ def write_test_case(new_test_case : WriteTestCaseBase, db: Session = Depends(get
     db.add(db_new_test_case)
     db.commit()
     db.refresh(db_new_test_case)
-    return {"message" : "Test case created successfully"}
+    return {"message" : "Test case created successfully", "id" : db_new_test_case.id}
 
 @router.delete("/api/test_case/{test_case_id}", tags=["Test Cases"])
 def delete_test_case(test_case_id : int, db: Session = Depends(get_db)):

@@ -39,7 +39,7 @@ def write_participants(new_contest_participant,db: Session = Depends(get_db)):
     db.add(db_new_contest_participant)
     db.commit()
     db.refresh(db_new_contest_participant)
-    return {"Message" : "Contest participant inserted succesfully"}
+    return {"Message" : "Contest participant inserted succesfully", "id" : db_new_contest_participant.id}
 
 @router.delete("/api/contest/{contest_id}/participant/{user_id}", tags=["Contest", "Contest Participant"])
 def delete_participant(contest_id: int, user_id: str, db : Session = Depends(get_db)):

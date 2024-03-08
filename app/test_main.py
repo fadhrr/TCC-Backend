@@ -1,32 +1,26 @@
 from fastapi.testclient import TestClient
-
+import re
 from .main import app
 
 client = TestClient(app)
 
-def test_read_all_users():
-    response = client.get("/api/users")
-    assert response.status_code == 200
+# Fungsi untuk mendapatkan semua endpoint "GET" dari semua router yang telah Anda daftarkan
+def get_all_get_endpoints():
+    endpoints = []
+    print("Getting all endpoints\n")
+    # print("app.routes: ", app.routes, "\n")
+    for route in app.routes:
+        print("route: ", route, "\n")
+        if 'GET' in route.methods and route.path.startswith('/'):
+            endpoints.append(route.path)
+    return endpoints
 
-
-def test_read_user():
-    response = client.get("/api/users/1")
-    assert response.status_code == 200
-    assert response.json() == {"id": 1, "name": "user1"}
-
-
-def test_create_user():
-    response = client.post("/api/users", json={"name": "user2"})
-    assert response.status_code == 201
-    assert response.json() == {
-        "email": "admin@example.com",
-        "remember_token": None,
-        "updated_at": "2024-01-26T17:28:42",
-        "name": "Admin User",
-        "id": "1",
-        "nim": "A12345",
-        "score": 150,
-        "email_verified_at": None,
-        "created_at": "2024-01-26T17:28:42",
-    }
-
+# Fungsi untuk menguji semua endpoint "GET"
+def test_all_get_endpoints():
+    endpoints = get_all_get_endpoints()
+    print(f"Testing {len(endpoints)} endpoints\n")
+    for endpoint in endpoints:
+        print(f"Testing {endpoint}\n")
+        endpoint = re.sub(r'\{(.*?)\}', '1', endpoint)
+        response = client.get(endpoint)
+        assert response.status_code == 200, f"Failed to get {endpoint}. Status code: {response.status_code}"

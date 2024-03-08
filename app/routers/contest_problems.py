@@ -57,7 +57,7 @@ def create_contest_problem(new_contest_problem: ContestProblemCreate):
     db.add(problem)
     db.commit()
     db.refresh(problem)
-    return {"message": "Contest Problems created successfully"}
+    return {"message": "Contest Problems created successfully", "data" : problem}
 
 @router.delete("/contest_problems/{contest_problem_id}", tags=["Contest Problem"])
 def delete_contest_problem(contest_problem_id: int):

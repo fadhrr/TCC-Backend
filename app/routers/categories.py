@@ -45,7 +45,7 @@ def write_category(new_category : WriteCategoryBase,db: Session = Depends(get_db
     db.add(db_new_category)
     db.commit()
     db.refresh(db_new_category)
-    return {"message" : "Category created successfully"}
+    return {"message" : "Category created successfully", "id" : db_new_category.id}
 
 @router.delete("/api/category/{category_id}", tags=["Category"])
 def delete_category(category_id : int,db: Session = Depends(get_db)):
