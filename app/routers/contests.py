@@ -11,7 +11,7 @@ from ..models import (
 )
 from pydantic import BaseModel
 from datetime import datetime
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session
 from fastapi import Depends
 
 ## Untuk Loggin
@@ -81,7 +81,7 @@ def write_contest(new_contest: WriteContestBase, db: Session = Depends(get_db)):
     db.refresh(new_db_contest)
     return {"message": "Contest created successfully",
             "Status" : 200,
-            "contest" : new_db_contest}
+            "data" : new_db_contest}
     
 
 
@@ -125,19 +125,6 @@ def delete_contest(contest_id: int, db: Session = Depends(get_db)):
     return {"message": "Contest deleted succesfully"}
 
 
-@router.get("/api/contest/{contest_id}/problems", tags=["Contest"])
-def contest_problems(contest_id: int, db: Session = Depends(get_db)):
-    db_contest = db.query(Contest).filter(Contest.id == contest_id).first()
-    if db_contest is None:
-        raise HTTPException(status_code=404, detail="Contest Not Found")
-    db_contest_problems = (
-        db.query(ContestProblem)
-        .filter(ContestProblem.contest_id == contest_id)
-        .options(joinedload(ContestProblem.categories))
-        .all()
-    )
-
-    return db_contest_problems
 
 
 @router.get("/api/contest/{contest_id}/scoreboard", tags=["Contest", "Scoreboard"])
@@ -261,8 +248,8 @@ def contest_scoreboard(contest_id: int, db: Session = Depends(get_db)):
 
 
 @router.get(
-    "/api/contest/{contest_id}/user/{user_id}/problems/{problems_id}",
-    tags=["Contest", "Testing"],
+    "/api/contest/{contest_id}/user/{user_id}/problems/{problems_id}/submissions",
+    tags=["Contest Submission"],
 )
 def contest_user_problems(
     contest_id: int, user_id: int, problems_id: int, db: Session = Depends(get_db)

@@ -56,11 +56,11 @@ app.include_router(problem_test_cases.router)
 app.include_router(problem_test_case_results.router)
 app.include_router(notification.router)
 
-app.include_router(local_test_cases.router)
-app.include_router(local_test_case_results.router)
-app.include_router(local_contests.router)
-app.include_router(local_contest_participants.router)
-app.include_router(local_contest_problems.router)
+# app.include_router(local_test_cases.router)
+# app.include_router(local_test_case_results.router)
+# app.include_router(local_contests.router)
+# app.include_router(local_contest_participants.router)
+# app.include_router(local_contest_problems.router)
 
 
 

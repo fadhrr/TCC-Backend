@@ -4,6 +4,8 @@ uvicorn[standard]
 SQLAlchemy==2.0.25
 sqlmodel==0.0.14
 requests==2.31.0
-httpx==0.26.
+httpx==0.26.0
 cryptography
-
+pytest==8.0.2
+pytest-asyncio==0.23.5.post1
+anyio==4.2.0

@@ -2588,6 +2588,13 @@ ALTER TABLE
   `problems`
 ADD
   PRIMARY KEY (`id`);
+--
+-- Indeks untuk tabel `contest_problems`
+--
+ALTER TABLE
+  `contest_problems`
+ADD
+  PRIMARY KEY (`id`);
 
 --
 -- Indeks untuk tabel `local_problems`
@@ -2719,6 +2726,14 @@ MODIFY
 --
 ALTER TABLE
   `contests`
+MODIFY
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 4;
+--
+-- AUTO_INCREMENT untuk tabel `contests`
+--
+ALTER TABLE
+  `contest_problems`
 MODIFY
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
@@ -2901,6 +2916,13 @@ ALTER TABLE
   `contests`
 ADD
   CONSTRAINT `contests_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+--
+-- Ketidakleluasaan untuk tabel `contest_problems`
+--
+ALTER TABLE
+  `contest_problems`
+ADD
+  CONSTRAINT `contest_problems_contest_id_foreign` FOREIGN KEY (`contest_id`) REFERENCES `contests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `local_contests`

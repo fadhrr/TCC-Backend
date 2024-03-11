@@ -51,6 +51,8 @@ def read_admin(admin_id:str,db: Session = Depends(get_db)):
     
     
     db_admin_data = db.query(Admin).filter(Admin.id == admin_id).first()
+    if db_admin_data is None:
+        raise HTTPException(status_code=404, detail="Admin data not found")
     return db_admin_data
 
 @router.post('/api/admin', tags=["Admin"])

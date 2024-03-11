@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta
 from .database import Base
@@ -24,7 +24,7 @@ class Problem(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String(255))
     # user_id = Column(String(255), ForeignKey("users.id"))
-    description = Column(String)
+    description = Column(Text)
     time_limit = Column(Integer)
     memory_limit = Column(Integer)
     input_format = Column(String)
@@ -136,7 +136,7 @@ class ContestProblem(Base):
     contest_id = Column(Integer, ForeignKey("contests.id"))
     title = Column(String(255))
     # user_id = Column(String(255), ForeignKey("users.id"))
-    description = Column(String)
+    description = Column(Text)
     time_limit = Column(Integer)
     memory_limit = Column(Integer)
     input_format = Column(String)

@@ -61,14 +61,8 @@ def read_problem(problem_id : int,db: Session = Depends(get_db)):
     
     
     db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem_id).first()
-    return db_problem
-
-# get router based on category
-@router.get('/api/problems/{category_id}', tags=["Problem", "Category"])
-def read_problem_category(category_id : int,db: Session = Depends(get_db)):
-    
-    
-    db_problem = db.query(Problem).join(ProblemCategory).filter(ProblemCategory.category_id == category_id).all()
+    if db_problem is None :
+        raise HTTPException(status_code=404, detail="Problem not found")
     return db_problem
 
 
@@ -103,7 +97,7 @@ def update_problem(problem_id : int, new_problem : UpdatedProblemBase,db: Sessio
     old_problem = db.query(Problem).filter(Problem.id == problem_id).first()
     
     if not old_problem :
-        return { "message" : "No problem found"}
+        raise HTTPException(status_code=404, detail="Problem not found")
 
     if new_problem.title is not None :
         old_problem.title = new_problem.title
@@ -142,8 +136,6 @@ def update_problem(problem_id : int, new_problem : UpdatedProblemBase,db: Sessio
 
 @router.delete('/api/problems/{problem_id}', tags=["Problem"])
 def function(problem_id : int,db: Session = Depends(get_db)):
-    
-    
     problem = db.query(Problem).filter(Problem.id==problem_id).first()
     if problem is None :
         raise HTTPException(status_code=404, detail="Problem was not found")
@@ -167,6 +159,16 @@ def function(problem_id : int,db: Session = Depends(get_db)):
 #     return db_problem
 
 
+# get router based on category
+@router.get('/api/problems/categories/{category_id}', tags=["Problem", "Category"])
+def read_problem_category(category_id : int,db: Session = Depends(get_db)):
+    
+    
+    db_problem = db.query(Problem).join(ProblemCategory).filter(ProblemCategory.category_id == category_id).all()
+    if db_problem is None :
+        raise HTTPException(status_code=404, detail="Problem not found")
+    return db_problem
+
 @router.post("/api/problems/{problem_id}/categories/{category_id}", tags=["Problem", "Category"])
 def add_problem_category(problem_id : int, category_id : int, db: Session = Depends(get_db)):
     problem = db.query(Problem).filter(Problem.id == problem_id).first()
@@ -181,3 +183,12 @@ def add_problem_category(problem_id : int, category_id : int, db: Session = Depe
     except:
         raise HTTPException(status_code=400, detail="Problem already has this category")
         
+@router.delete("/api/problems/{problem_id}/categories/{category_id}", tags=["Problem", "Category"])
+def delete_problem_category(problem_id : int, category_id : int, db: Session = Depends(get_db)):
+    problem_category = db.query(ProblemCategory).filter(ProblemCategory.problem_id == problem_id, ProblemCategory.category_id == category_id).first()
+    if problem_category is None:
+        raise HTTPException(status_code=404, detail="Problem or Category not found")
+    db.delete(problem_category)
+    db.commit()
+    return {"message" : "Category from problem deleted successfully"}
+

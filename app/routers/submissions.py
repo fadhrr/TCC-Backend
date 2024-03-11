@@ -226,7 +226,7 @@ async def async_write_submission(
 
         # Kirim request ke judger secara asynchronous
         background_tasks.add_task(send_to_judge, db, db_new_submission, payloads)
-        return {"message": "Submission is being judged"}
+        return {"message": "Submission is being judged", "data": db_new_submission}
     except Exception as e:
         # Jika terjadi error, status = Internal Server Error
         db_new_submission.status = "ISE"
