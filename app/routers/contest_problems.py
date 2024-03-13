@@ -18,6 +18,7 @@ class ContestProblemCreate(BaseModel):
     sample_output : str
     constraints : str
     explanation : str | None = None
+    category : list[int] | None = None    
     
 def get_db():
     db = SessionLocal()
@@ -27,7 +28,7 @@ def get_db():
         db.close()
     
 
-@router.get("/api/contest/problems",  tags=["Contest Problem"])
+@router.get("/api/contest/problems/all",  tags=["Contest Problem"])
 def get_all_contest_problems(db: Session = Depends(get_db)):
     contest_problems = db.query(ContestProblem).all()
     if not contest_problems:
