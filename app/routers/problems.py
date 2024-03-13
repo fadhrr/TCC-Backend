@@ -15,7 +15,16 @@ def get_db():
         yield db
     finally:
         db.close()
-    
+
+def format_category_name(problem, db : Session = Depends(get_db)):
+    categories_id = problem.categories
+    categories_name = []
+    for category_id in categories_id:
+        category_name = db.query(Category).filter(Category.id == category_id.id).first().name
+        categories_name.append(category_name)
+    problem.categories = categories_name
+    return problem
+
 
 class WriteProblemBase(BaseModel):
     title : str
@@ -28,7 +37,7 @@ class WriteProblemBase(BaseModel):
     sample_output : str
     constraints : str
     explanation : str | None = None
-    
+    category : list[int] 
 
 class UpdatedProblemBase(BaseModel):
     title : str | None = None
@@ -41,7 +50,8 @@ class UpdatedProblemBase(BaseModel):
     sample_output : str | None = None
     constraints : str | None = None
     explanation : str | None = None
-
+    category : list[int] | None = None  
+    
 @router.get('/api/problems', tags=["Problem"])
 def read_problems(db: Session = Depends(get_db)):
     
@@ -81,14 +91,26 @@ def create_problem(new_problem : WriteProblemBase,db: Session = Depends(get_db))
         sample_output = new_problem.sample_output,
         constraints = new_problem.constraints
         )
+    for category_id in new_problem.category:
+        category = db.query(Category).filter(Category.id == category_id).first()
+        if category is None:
+            raise HTTPException(status_code=404, detail="Category not found")
+        problem.categories.append(category)
+        
+        
     if new_problem.explanation is not None :
         problem.explanation = new_problem.explanation
 
     db.add(problem)
     db.commit()
     db.refresh(problem)
-    return {"message": "Problems created successfully",
-            "data" : problem}
+    
+    db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem.id).first()
+    if db_problem is None :
+        raise HTTPException(status_code=404, detail="Problem not found")
+    db_problem = format_category_name(db_problem, db)
+    return {"message": "Problem retrieved successfully",
+            "data": db_problem}
 
 @router.put('/api/problem/{problem_id}', tags=["Problem"])
 def update_problem(problem_id : int, new_problem : UpdatedProblemBase,db: Session = Depends(get_db)):
