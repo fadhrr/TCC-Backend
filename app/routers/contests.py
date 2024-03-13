@@ -300,3 +300,11 @@ def contest_user_problems(
         "problem": db_problems,
         "submissions": submissions,
     }
+
+
+@router.get('/api/contest/s/{slug}', tags=["contest"])
+def read_contest_by_slug(slug: str, db: Session = Depends(get_db)):
+    db_contest = db.query(Contest).filter(Contest.slug == slug).first()
+    if db_contest is None:
+        raise HTTPException(status_code=404, detail="Contest Not Found")
+    return db_contest

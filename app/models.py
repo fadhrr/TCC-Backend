@@ -290,6 +290,11 @@ class LocalProblemCategory(Base):
     category_id = Column(String, ForeignKey("categories.id"))
     problem_id = Column(Integer, ForeignKey("local_problems.id"))
     
+    
+    
+
+# ================================== CLASS ======================================== #
+
 
 
 
