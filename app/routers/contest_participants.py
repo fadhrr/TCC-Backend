@@ -31,6 +31,13 @@ def read_participants_contest(contest_id:int,db: Session = Depends(get_db)):
     db_contest_participants = db.query(ContestParticipant).filter(ContestParticipant.contest_id == contest_id).all()
     return db_contest_participants
 
+@router.get("/api/contest/{contest_id}/user/{user_id}", tags=["Contest", "Contest Participant"])
+def read_contest_participant_by_id(contest_id : int, user_id : str, db : Session = Depends(get_db)):
+    db_participant = db.query(ContestParticipant).filter(ContestParticipant.id == contest_id, ContestParticipant.user_id == user_id)
+    if db_participant is None :
+        raise HTTPException(status_code=400, detail="User not found in this contest")
+    return db_participant
+
 @router.post("/api/contest/participant", tags=["Contest", "Contest Participant"])
 def write_participants(new_contest_participant : WriteContestParticipantBase,db: Session = Depends(get_db)):
     
