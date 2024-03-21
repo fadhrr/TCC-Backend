@@ -191,3 +191,4 @@ def test_write_update_delete_contest_problem():
 def test_clear_all():
     response = client.delete(f"/api/user/{userTestingId}")
     assert response.status_code == 200
+
