@@ -135,7 +135,7 @@ class ContestProblem(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     contest_id = Column(Integer, ForeignKey("contests.id"))
     title = Column(String(255))
-    # user_id = Column(String(255), ForeignKey("users.id"))
+    
     description = Column(Text)
     time_limit = Column(Integer)
     memory_limit = Column(Integer)
