@@ -32,7 +32,7 @@ def read_participants_contest(contest_id:int,db: Session = Depends(get_db)):
     return db_contest_participants
 
 @router.post("/api/contest/participant", tags=["Contest", "Contest Participant"])
-def write_participants(new_contest_participant,db: Session = Depends(get_db)):
+def write_participants(new_contest_participant : WriteContestParticipantBase,db: Session = Depends(get_db)):
     
     
     db_new_contest_participant = ContestParticipant(contest_id = new_contest_participant.contest_id, user_id = new_contest_participant.user_id)
