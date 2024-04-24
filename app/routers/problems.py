@@ -7,6 +7,11 @@ from ..models import Problem, ProblemCategory, Category
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.orm import Session
 from fastapi import Depends
+
+import logging
+
+# Set up logging
+logger = logging.getLogger("uvicorn")
  
 router = APIRouter()
 def get_db():
@@ -16,14 +21,24 @@ def get_db():
     finally:
         db.close()
 
-def format_category_name(problem, db : Session = Depends(get_db)):
+def format_problem_category_name(problem, db : Session = Depends(get_db)):
     categories_id = problem.categories
     categories_name = []
     for category_id in categories_id:
+        
         category_name = db.query(Category).filter(Category.id == category_id.id).first().name
         categories_name.append(category_name)
     problem.categories = categories_name
     return problem
+    
+def format_category_name(categories,db):
+    categories_name = []
+    for category in categories:
+        # logger.info(f"Category {category} ")
+        category_name = db.query(Category).filter(Category.id == category.category_id).first()
+        # logger.info(f"Category isi {category_name} ")
+        categories_name.append(category_name)
+    return categories_name
 
 
 class WriteProblemBase(BaseModel):
@@ -91,13 +106,7 @@ def create_problem(new_problem : WriteProblemBase,db: Session = Depends(get_db))
         sample_output = new_problem.sample_output,
         constraints = new_problem.constraints
         )
-    for category_id in new_problem.category:
-        category = db.query(Category).filter(Category.id == category_id).first()
-        if category is None:
-            raise HTTPException(status_code=404, detail="Category not found")
-        problem.categories.append(category)
-        
-        
+    
     if new_problem.explanation is not None :
         problem.explanation = new_problem.explanation
 
@@ -105,10 +114,25 @@ def create_problem(new_problem : WriteProblemBase,db: Session = Depends(get_db))
     db.commit()
     db.refresh(problem)
     
-    db_problem = db.query(Problem).options(joinedload(Problem.categories)).filter(Problem.id == problem.id).first()
+    for category_id in new_problem.category:
+        category = db.query(Category).filter(Category.id == category_id).first()
+        category_name = category.name
+        if category is None:
+            raise HTTPException(status_code=404, detail="Category not found")
+        problem_categories = ProblemCategory(problem_id = problem.id, category_id = category.id)
+        db.add(problem_categories)
+        db.commit()
+        
+    db_problem = db.query(Problem).filter(Problem.id == problem.id).first()
     if db_problem is None :
         raise HTTPException(status_code=404, detail="Problem not found")
-    db_problem = format_category_name(db_problem, db)
+    db_problem_categories = db.query(ProblemCategory).filter(ProblemCategory.problem_id == problem.id).all()
+    # for category in db_problem_categories:
+        # logger.info(f"Problem Categories is {category.category_id}")
+        
+    db_problem_categories = format_category_name(db_problem_categories, db)
+    db_problem.categories = db_problem_categories
+    
     return {"message": "Problem retrieved successfully",
             "data": db_problem}
 
